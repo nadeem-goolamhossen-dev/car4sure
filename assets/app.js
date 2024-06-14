@@ -1,15 +1,17 @@
-// Provide Jquery
-import './provideJquery.js';
-
+// start the Stimulus application
 import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
 import './styles/app.css';
+
+// load fontawesome
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/css/v4-shims.css';
+
+// Provide Jquery
+import './jquery_global.js';
+
+// Import Js
+import 'bootstrap';
+import 'typeahead.js';
 
 // Import minified custom Js file
 import './main.min.js';
-

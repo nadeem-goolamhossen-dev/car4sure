@@ -28,8 +28,8 @@ return [
     'bootstrap' => [
         'version' => '5.3.3',
     ],
-    '@popperjs/core' => [
-        'version' => '2.11.8',
+    'bootstrap/js/dist/alert' => [
+        'version' => '5.3.3',
     ],
     'bootstrap/dist/css/bootstrap.min.css' => [
         'version' => '5.3.3',
@@ -37,5 +37,31 @@ return [
     ],
     'jquery' => [
         'version' => '3.7.1',
+    ],
+    'bootstrap/js/dist/collapse' => [
+        'version' => '5.3.3',
+    ],
+    'bootstrap/js/dist/dropdown' => [
+        'version' => '5.3.3',
+    ],
+    'bootstrap/js/dist/tab' => [
+        'version' => '5.3.3',
+    ],
+    'bootstrap/js/dist/modal' => [
+        'version' => '5.3.3',
+    ],
+    '@fortawesome/fontawesome-free/css/all.css' => [
+        'version' => '6.5.1',
+        'type' => 'css',
+    ],
+    '@fortawesome/fontawesome-free/css/v4-shims.css' => [
+        'version' => '6.5.1',
+        'type' => 'css',
+    ],
+    '@popperjs/core' => [
+        'version' => '2.11.8',
+    ],
+    'typeahead.js' => [
+        'version' => '0.11.1',
     ],
 ];
