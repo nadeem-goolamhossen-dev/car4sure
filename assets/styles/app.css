@@ -1,1 +1,11 @@
 @import url('../vendor/bootstrap/dist/css/bootstrap.min.css');
+
+body {
+    font-family: 'Verdana', sans-serif;
+    font-size: 12px;
+}
+
+.logo {
+    width:3.5em;
+    margin-right:5px;
+}

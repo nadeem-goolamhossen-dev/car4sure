@@ -1,6 +1,7 @@
 // start the Stimulus application
 import './bootstrap.js';
 import './styles/app.css';
+import './styles/dashboard.css';
 
 // load fontawesome
 import '@fortawesome/fontawesome-free/css/all.css';

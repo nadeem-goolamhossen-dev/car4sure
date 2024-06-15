@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Car4Sure - Dashboard{% endblock %}
+
+{% block body %}
+{#    {{ app.request.attributes.get('_route') }}#}
+{#    <label id="dashboardName" class="show">{{ activeMenu }}</label>#}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="navbar navbar-light sticky-top bg-light flex-md-nowrap px-2 shadow text-center">
+                <span class="navbar-brand text-start">Car4Sure</span>
+                <button class="navbar-toggler d-md-none collapsed text-end me-1" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" data-app-name="app_dashboard" href="{{
+                            path('app_dashboard') }}">
+                                <i class="fa fa-home"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-app-name="app_dashboard_users" href="{{ path('app_dashboard_users') }}">
+                                <i class="fa fa-users"></i>
+                                Users
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">{{ title }}</h1>
+                    {% block dashboardBtns %}{% endblock %}
+                </div>
+
+                {% block dashboardBody %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        [].forEach.call(document.querySelectorAll("#sidebarMenu a.nav-link"), function(el) {
+            if (el.dataset.appName !== '{{ activeMenu }}') {
+                el.classList.remove("active");
+            } else {
+                el.classList.add("active");
+            }
+        });
+    </script>
+
+{% endblock %}

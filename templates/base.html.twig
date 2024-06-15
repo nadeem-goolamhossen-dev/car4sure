@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Car4Sure - Insurance Policy Management">
+        <meta name="keywords" content="insurance">
+        <meta name="author" content="GOOLAM HOSSEN Nadeem">
+
+        <title>{% block title %}Car4Sure{% endblock %}</title>
+
+        <!-- Favicons -->
+        <link rel="shortcut icon" type="image/png" href="{{ asset('logo-dark.webp') }}">
+        <link rel="apple-touch-icon" type="image/png" href="{{ asset('logo-dark.webp') }}">
 
         {% block stylesheets %}
         {% endblock %}
@@ -13,6 +22,18 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <!-- ======= Header ======= -->
+        {% include 'inc/header.html.twig' %}
+        <!-- End Header -->
+
+        <!-- ======= Main ======= -->
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        <!-- End #main -->
+
+        <!-- ======= Footer ======= -->
+        {% include 'inc/footer.html.twig' %}
+        <!-- End Footer -->
     </body>
 </html>

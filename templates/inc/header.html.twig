@@ -1,0 +1,29 @@
+<header id="header" class="header">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('app_main') }}">
+                <img class="logo img-fluid" src="{{ asset('logo-white.webp') }}" alt="Car4Sure-logo"
+                     title="Car4Sure-logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+                    aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="menu">
+                <div class="d-flex align-content-center">
+                    <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                        {% if app.user %}
+                            <span class="nav-link text-white">Welcome <strong>{{ app.user.fullname }}</strong>
+                                !</span>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_logout') }}"><span class="glyphicon
+                                glyphicon-user"></span> Logout</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</header>

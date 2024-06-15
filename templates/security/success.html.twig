@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Logout{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4 text-center">
+                <h3 class="mb-3 font-weight-normal">You are logged out</h3>
+                <a class="btn btn-bold btn-block btn-primary w-150px mx-auto" href="{{ path('app_login') }}">Login</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

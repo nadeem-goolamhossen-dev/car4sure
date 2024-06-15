@@ -5,14 +5,21 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use App\Traits\LoggableEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: '`user`')]
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'Email already exists')]
+#[ORM\Table(name: '`user`')]
 #[ORM\Index(name: "email_idx", columns: ["email"])]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'], )]
+
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['user' => 'App\Entity\User'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use LoggableEntityTrait;
@@ -43,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles;
 
     /**
      * User hashed password
@@ -76,8 +83,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @var bool
      */
-    #[ORM\Column]
-    private bool $isActive = false;
+    #[ORM\Column(type: "boolean")]
+    protected bool $isActive = false;
 
     /**
      * Return id of user.
@@ -114,6 +121,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * Return fullname of user
+     *
+     * @return string
+     */
+    public function getFullname(): string
+    {
+        return (string) $this->getLastname() . ' ' . $this->getFirstname();
+    }
+
+    /**
      * A visual identifier that represents this user.
      *
      * @see UserInterface
@@ -128,7 +145,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @see UserInterface
      *
-     * @return list<string>
+     * @return array
      */
     public function getRoles(): array
     {
@@ -226,9 +243,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Get active status of user
      *
-     * @return bool
+     * @return bool|null
      */
-    public function isActive(): bool
+    public function isActive(): ?bool
     {
         return $this->isActive;
     }
@@ -236,11 +253,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Set active status of user
      *
-     * @param bool $isActive
+     * @param bool|null $isActive
      *
      * @return $this
      */
-    public function setActive(bool $isActive): static
+    public function setActive(?bool $isActive): self
     {
         $this->isActive = $isActive;
 
