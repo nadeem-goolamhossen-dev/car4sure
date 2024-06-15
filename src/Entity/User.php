@@ -48,10 +48,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * User hashed password
      *
-     * @var string The hashed password
+     * @var string
      */
     #[ORM\Column]
     private string $password;
+
+    /**
+     * Firstname of user
+     *
+     * @var string
+     */
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Please enter firstname")]
+    private string $firstname;
+
+    /**
+     * Lastname of user
+     *
+     * @var string
+     */
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Please enter lastname")]
+    private string $lastname;
+
+    /**
+     * Check if user is active
+     *
+     * @var bool
+     */
+    #[ORM\Column]
+    private bool $isActive = false;
 
     /**
      * Return id of user.
@@ -70,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getEmail(): ?string
     {
-        return $this->email;
+        return mb_strtolower($this->email);
     }
 
     /**
@@ -82,7 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setEmail(string $email): static
     {
-        $this->email = $email;
+        $this->email = mb_strtolower($email);
 
         return $this;
     }
@@ -132,7 +158,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return $this->password;
+        return (string) $this->password;
     }
 
     /**
@@ -145,6 +171,78 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get user firstname
+     *
+     * @return string
+     */
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set user firstname
+     *
+     * @param string $firstname
+     *
+     * @return $this
+     */
+    public function setFirstname(string $firstname): static
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * Get user lastname
+     *
+     * @return string|null
+     */
+    public function getLastname(): ?string
+    {
+        return mb_strtoupper($this->lastname);
+    }
+
+    /**
+     * Set user lastname
+     *
+     * @param string $lastname
+     *
+     * @return $this
+     */
+    public function setLastname(string $lastname): static
+    {
+        $this->lastname = mb_strtoupper($lastname);
+
+        return $this;
+    }
+
+    /**
+     * Get active status of user
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set active status of user
+     *
+     * @param bool $isActive
+     *
+     * @return $this
+     */
+    public function setActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
