@@ -56,7 +56,17 @@ class InitCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Start initialising app');
-        $io->text('- Initialising app');
+
+        $io->text('- Recreating database');
+        shell_exec('php bin/console d:d:d --force');
+        shell_exec('php bin/console d:d:c');
+
+        $io->text('- Executing migrations');
+        shell_exec('php bin/console d:m:m -n');
+
+        $io->text('- Loading fixtures');
+        shell_exec('php bin/console d:f:l -n');
+
         $io->success('App has been initialised successfully.');
 
         return Command::SUCCESS;
