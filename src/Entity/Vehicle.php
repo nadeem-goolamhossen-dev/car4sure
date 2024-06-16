@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VehicleRepository::class)]
+#[ORM\Table(name: '`vehicle`')]
 class Vehicle
 {
     use LoggableEntityTrait;
@@ -194,5 +195,10 @@ class Vehicle
         $this->coverages->removeElement($coverage);
 
         return $this;
+    }
+
+    public function getLabel(): string
+    {
+        return $this->make . ' (model: ' . $this->model . ', year: ' . $this->year . ', vin:' . $this->vin . ')';
     }
 }

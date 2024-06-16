@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CoverageRepository::class)]
+#[ORM\Table(name: '`coverage`')]
 class Coverage
 {
     use LoggableEntityTrait;
@@ -124,7 +125,7 @@ class Coverage
         return $this;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->type . ' (limit: ' . $this->coverLimit . ', deductible: ' . $this->deductible . ')';
     }

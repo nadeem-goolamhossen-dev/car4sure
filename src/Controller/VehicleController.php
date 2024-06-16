@@ -69,6 +69,7 @@ class VehicleController extends AbstractController
             } catch (Exception $e) {
                 $this->addFlash('Error', sprintf("An error occured while saving the vehicle. [%s]", $e->getMessage
                 ()));
+                $this->redirectToRoute('app_dashboard_vehicles_create');
             }
         }
 
