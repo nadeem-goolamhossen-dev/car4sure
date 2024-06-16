@@ -8,6 +8,7 @@ use App\Service\Policy\PolicyManager;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,7 +29,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * Dashboard - Policies
+     * Policies
      *
      * @throws Exception
      */
@@ -44,7 +45,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * Users
+     * Create policy
      *
      * @throws Exception
      */
@@ -73,8 +74,75 @@ class PolicyController extends AbstractController
             'title' => 'Policies',
             'activeMenu' => 'app_dashboard_policies',
             'form' => $form->createView(),
-            'policies' => $policyManager->getPolicies(),
             'isAdmin' => $this->isAdmin,
+        ]);
+    }
+
+    /**
+     * Edit policy
+     *
+     * @throws Exception
+     */
+    #[Route('/dashboard/policies/{id}/edit', name: 'app_dashboard_policies_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Policy $policy, PolicyManager $policyManager): Response
+    {
+        dd($policy);
+        $form = $this->createForm(PolicyType::class, $policy);
+        $form->handleRequest($request);
+
+        // Form
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $policyManager->save($form->getData());
+                $this->addFlash('Success', sprintf("The policy %s has been registered successfully",
+                    $policy->getPolicyNo()));
+
+                return $this->redirectToRoute('app_dashboard_policies');
+            } catch (Exception $e) {
+                $this->addFlash('Error', sprintf("An error occured while registering the policy. [%s]", $e->getMessage
+                ()));
+            }
+        }
+
+        return $this->render('dashboard/policy/edit.html.twig', [
+            'title' => 'Policies',
+            'activeMenu' => 'app_dashboard_policies',
+            'form' => $form->createView(),
+            'isAdmin' => $this->isAdmin,
+        ]);
+    }
+
+    /**
+     * Delete policy
+     *
+     * @throws Exception
+     */
+    #[Route('/dashboard/policies/{id}/delete', name: 'app_dashboard_policies_delete', methods: ['DELETE'])]
+    public function delete(Policy $policy,  PolicyManager $policyManager): JsonResponse
+    {
+        try {
+            $policyManager->delete($policy);
+        } catch (Exception $e) {
+            $this->addFlash('Error', sprintf("Unable to delete this policy",));
+            return $this->json(['success' => false]);
+        }
+
+        return $this->json(['success' => true]);
+    }
+
+    /**
+     * Show policy
+     *
+     * @throws Exception
+     */
+    #[Route('/dashboard/policies/{id}/show', name: 'app_dashboard_policies_show', methods: ['GET'])]
+    public function show(Policy $policy,  PolicyManager $policyManager): Response
+    {
+        return $this->render('dashboard/policy/show.html.twig', [
+            'title' => 'Policies',
+            'activeMenu' => 'app_dashboard_policies',
+            'isAdmin' => $this->isAdmin,
+            'policy' => $policy
         ]);
     }
 }

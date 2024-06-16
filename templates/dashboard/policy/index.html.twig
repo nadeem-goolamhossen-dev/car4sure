@@ -4,7 +4,8 @@
 
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            <a class="btn btn-success btnNewPolicy" href="{{ path('app_dashboard_policies_create') }}">New policy</a>
+            <a class="btn btn-success rounded-1 btnNewPolicy" href="{{ path('app_dashboard_policies_create') }}">New
+                policy</a>
         </div>
     </div>
 
@@ -12,7 +13,7 @@
 
 {% block dashboardBody %}
 
-    <table id="tblPolicies" class="table table-striped table-responsive my-3 tblDatalist">
+    <table id="tblPolicies" class="table table-striped table-responsive my-3 tblDatalist text-start">
         <thead>
         <tr>
             <th>#</th>
@@ -38,11 +39,45 @@
                 <td>{{ policy.createdAt|date('Y-m-d') }}</td>
                 <td>{{ policy.updatedAt|date('Y-m-d') }}</td>
                 <td>
-                    <button class="btn btn-outline-primary"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    <a class="btn btn-outline-primary" href="{{ path('app_dashboard_policies_show', {'id':
+                        policy.id}) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a class="btn btn-outline-info" href="{{ path('app_dashboard_policies_edit', {'id':
+                        policy.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="btn btn-outline-danger btnDeletePolicy" href="javascript:void()" data-path="{{ path
+                        ('app_dashboard_policies_delete', {'id': policy.id})
+                    }}" data-policy-number="{{ policy.policyNo }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.btnDeletePolicy').on('click', function (evt) {
+                evt.preventDefault();
+
+                let policyNo = $(this).attr('data-policy-number');
+
+                $.ajax({
+                    method: 'DELETE',
+                    url: $(this).attr('data-path'),
+                    cache: false,
+                    success: function(response) {
+                        if (response.success) {
+                            let alertElmt = `<div class="flash-success alert alert-success alert-dismissible fade
+                            show" role="alert" style="opacity: 500;">The policy ` + policyNo + ` was deleted successfully
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                            $(alertElmt).insertAfter('.main-title').fadeTo(2000, 500).slideUp(500, function () {
+                                $('.alert').slideUp(500);
+                                location.reload();
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
 {% endblock %}

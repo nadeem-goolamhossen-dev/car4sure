@@ -4,6 +4,7 @@
 
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
+            <a class="btn btn-info rounded-1 mx-3" href="{{ path('app_dashboard_policies_edit', {'id': policy.id}) }}">Editpolicy</a>
             <a class="btn btn-success rounded-1" href="{{ path('app_dashboard_policies') }}">List of policies</a>
         </div>
     </div>
@@ -16,45 +17,30 @@
         <div class="card card-shadowed">
             <header class="card-header">
                 <h4 class="card-title">
-                    <span>Add new Policy</span>
+                    <span>Policy No : <strong>{{ "%010d"|format(policy.policyNo) }}</strong> details</span>
                 </h4>
             </header>
-
-            {{ form_start(form) }}
 
             <div class="card-body">
                 <div class="mw-800px mx-auto">
                     <div class="row">
-                        <div class="col-6">
-                            {{ form_row(form.type) }}
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Type :</strong>{{ policy.type }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Effective date :</strong>{{ policy.effectiveDate|date('Y-m-d') }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Expiration date :</strong>{{ policy.expirationDate|date('Y-m-d') }}</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            {{ form_row(form.effectiveDate) }}
-                        </div>
-                        <div class="col-6">
-                            {{ form_row(form.expirationDate) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            {{ form_widget(form.status) }}
+                            <p class="text-truncate"><strong>Status :</strong>{{ (policy.status) ? 'Active' : 'Inactive' }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <footer class="p-1 float-end">
-                {{ form_widget(form.register) }}
-            </footer>
-
-            <div class="d-none">
-                {{ form_rest(form) }}
-            </div>
-
-            {{ form_end(form) }}
-
         </div>
     </div>
 
