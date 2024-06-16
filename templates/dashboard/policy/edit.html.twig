@@ -16,7 +16,7 @@
         <div class="card card-shadowed">
             <header class="card-header">
                 <h4 class="card-title">
-                    <span>Add new Policy</span>
+                    <span>{% if policy and policy.policyNo %}Modify Policy : {{ "%010d"|format(policy.policyNo) }}{% else %}New Policy{%endif %}</span>
                 </h4>
             </header>
 

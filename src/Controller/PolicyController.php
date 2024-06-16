@@ -50,56 +50,31 @@ class PolicyController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/policies/create', name: 'app_dashboard_policies_create', methods: ['GET', 'POST'])]
-    public function create(Request $request, PolicyManager $policyManager): Response
-    {
-        $policy = new Policy();
-        $form = $this->createForm(PolicyType::class, $policy);
-        $form->handleRequest($request);
-
-        // Form
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $policyManager->save($form->getData());
-                $this->addFlash('Success', sprintf("The policy %s has been registered successfully",
-                    $policy->getPolicyNo()));
-
-                return $this->redirectToRoute('app_dashboard_policies');
-            } catch (Exception $e) {
-                $this->addFlash('Error', sprintf("An error occured while registering the policy. [%s]", $e->getMessage
-                ()));
-            }
-        }
-
-        return $this->render('dashboard/policy/edit.html.twig', [
-            'title' => 'Policies',
-            'activeMenu' => 'app_dashboard_policies',
-            'form' => $form->createView(),
-            'isAdmin' => $this->isAdmin,
-        ]);
-    }
-
-    /**
-     * Edit policy
-     *
-     * @throws Exception
-     */
     #[Route('/dashboard/policies/{id}/edit', name: 'app_dashboard_policies_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Policy $policy, PolicyManager $policyManager): Response
+    public function edit(Request $request, ?Policy $policy, PolicyManager $policyManager): Response
     {
-        dd($policy);
+        $isNew = false;
+
+        if (is_null($policy)) {
+            $isNew = true;
+            $policy = new Policy();
+        }
+
         $form = $this->createForm(PolicyType::class, $policy);
         $form->handleRequest($request);
 
         // Form
         if ($form->isSubmitted() && $form->isValid()) {
+            $policy = $form->getData();
+
             try {
-                $policyManager->save($form->getData());
-                $this->addFlash('Success', sprintf("The policy %s has been registered successfully",
-                    $policy->getPolicyNo()));
+                $policyManager->save($policy);
+                $this->addFlash('Success', sprintf("The policy %s has been saved successfully",
+                    str_pad($policy->getPolicyNo(), 10, '0', STR_PAD_LEFT)));
 
                 return $this->redirectToRoute('app_dashboard_policies');
             } catch (Exception $e) {
-                $this->addFlash('Error', sprintf("An error occured while registering the policy. [%s]", $e->getMessage
+                $this->addFlash('Error', sprintf("An error occured while saving the policy. [%s]", $e->getMessage
                 ()));
             }
         }
@@ -109,6 +84,7 @@ class PolicyController extends AbstractController
             'activeMenu' => 'app_dashboard_policies',
             'form' => $form->createView(),
             'isAdmin' => $this->isAdmin,
+            'policy' => $isNew ? null : $policy
         ]);
     }
 

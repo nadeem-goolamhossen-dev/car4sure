@@ -43,7 +43,7 @@
                         policy.id}) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
                     <a class="btn btn-outline-info" href="{{ path('app_dashboard_policies_edit', {'id':
                         policy.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    <a class="btn btn-outline-danger btnDeletePolicy" href="javascript:void()" data-path="{{ path
+                    <a class="btn btn-outline-danger btnDeletePolicy" href="javascript:void(0)" data-path="{{ path
                         ('app_dashboard_policies_delete', {'id': policy.id})
                     }}" data-policy-number="{{ policy.policyNo }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 </td>
@@ -58,6 +58,7 @@
                 evt.preventDefault();
 
                 let policyNo = $(this).attr('data-policy-number');
+                policyNo = policyNo.toString().padStart(10, '0');
 
                 $.ajax({
                     method: 'DELETE',
@@ -66,9 +67,13 @@
                     success: function(response) {
                         if (response.success) {
                             let alertElmt = `<div class="flash-success alert alert-success alert-dismissible fade
-                            show" role="alert" style="opacity: 500;">The policy ` + policyNo + ` was deleted successfully
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>`;
+                            show" role="alert" style="opacity: 500;">`;
+                            alertElmt += `The policy `;
+                            alertElmt += policyNo;
+                            alertElmt += ` was deleted successfully`;
+                            alertElmt += `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>`;
+
                             $(alertElmt).insertAfter('.main-title').fadeTo(2000, 500).slideUp(500, function () {
                                 $('.alert').slideUp(500);
                                 location.reload();

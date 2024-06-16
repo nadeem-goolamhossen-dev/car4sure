@@ -4,8 +4,8 @@
 
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            <a class="btn btn-info rounded-1 mx-3" href="{{ path('app_dashboard_policies_edit', {'id': policy.id}) }}">Editpolicy</a>
-            <a class="btn btn-success rounded-1" href="{{ path('app_dashboard_policies') }}">List of policies</a>
+            <a class="btn btn-success rounded-1 policiesList" href="{{ path('app_dashboard_policies') }}">List of
+                policies</a>
         </div>
     </div>
 
@@ -16,8 +16,15 @@
     <div class="col-12">
         <div class="card card-shadowed">
             <header class="card-header">
-                <h4 class="card-title">
+                <h4 class="card-title justify-content-between">
                     <span>Policy No : <strong>{{ "%010d"|format(policy.policyNo) }}</strong> details</span>
+                    <span class="float-end">
+                        <a class="btn btn-info rounded-1" href="{{ path('app_dashboard_policies_edit', {'id': policy
+                        .id}) }}"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-danger btnDeletePolicy" href="javascript:void(0)" data-path="{{ path
+                            ('app_dashboard_policies_delete', {'id': policy.id})
+                        }}" data-policy-number="{{ policy.policyNo }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </span>
                 </h4>
             </header>
 
@@ -43,5 +50,38 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.btnDeletePolicy').on('click', function (evt) {
+                evt.preventDefault();
+
+                let policyNo = $(this).attr('data-policy-number');
+                policyNo = policyNo.toString().padStart(10, '0');
+
+                $.ajax({
+                    method: 'DELETE',
+                    url: $(this).attr('data-path'),
+                    cache: false,
+                    success: function(response) {
+                        if (response.success) {
+                            let alertElmt = `<div class="flash-success alert alert-success alert-dismissible fade
+                            show" role="alert" style="opacity: 500;">`;
+                            alertElmt += `The policy `;
+                            alertElmt += policyNo;
+                            alertElmt += ` was deleted successfully`;
+                            alertElmt += `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>`;
+
+                            $(alertElmt).insertAfter('.main-title').fadeTo(2000, 500).slideUp(500, function () {
+                                $('.alert').slideUp(500);
+                                location.href = $('.policiesList').attr('href');
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
 {% endblock %}
