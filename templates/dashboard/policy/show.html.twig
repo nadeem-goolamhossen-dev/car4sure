@@ -16,8 +16,9 @@
     <div class="col-12">
         <div class="card card-shadowed">
             <header class="card-header">
-                <h4 class="card-title justify-content-between">
-                    <span>Policy No : <strong>{{ "%010d"|format(policy.policyNo) }}</strong> details</span>
+                <h6 class="card-title justify-content-between">
+                    <span>Details for policy no. : <strong>{{ "%010d"|format(policy.policyNo)
+                            }}</strong></span>
                     <span class="float-end">
                         <a class="btn btn-info rounded-1" href="{{ path('app_dashboard_policies_edit', {'id': policy
                         .id}) }}"><i class="fa fa-pencil"></i></a>
@@ -25,7 +26,7 @@
                             ('app_dashboard_policies_delete', {'id': policy.id})
                         }}" data-policy-number="{{ policy.policyNo }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     </span>
-                </h4>
+                </h6>
             </header>
 
             <div class="card-body">
@@ -46,6 +47,81 @@
                             <p class="text-truncate"><strong>Status :</strong>{{ (policy.status) ? 'Active' : 'Inactive' }}</p>
                         </div>
                     </div>
+
+                    {% if policy.vehicles.count > 0 %}
+
+                        <div class="p-2 my-2 bg-primary-subtle">
+                            <span class="text-truncate"><strong>Details of vehicles</strong></span>
+                        </div>
+
+                        {% for vehicle in policy.vehicles %}
+
+                            <p class="text-truncate"><strong>Vehicle {{ loop.index }}</strong></p>
+
+                            <div class="vehicles-details">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Make :</strong>{{ vehicle.make }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Model :</strong>{{ vehicle.model }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Year :</strong>{{ vehicle.year }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Vin :</strong>{{ vehicle.vin }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Annual milleage :</strong>{{ vehicle.annualMilleage }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Ownership :</strong>{{ vehicle.ownership }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Usage :</strong>{{ vehicle
+                                            .vehicleUsage }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Primary use :</strong>{{ vehicle.primaryUse }}</p>
+                                    </div>
+                                </div>
+
+                                {% if vehicle.coverages %}
+                                    <div class="p-2 my-2 bg-dark-subtle">
+                                        <span class="text-truncate"><strong>Coverages</strong></span>
+                                    </div>
+
+                                    {% for coverage in vehicle.coverages %}
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <p class="text-truncate"><strong>Type :</strong>{{ coverage.type }}</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="text-truncate"><strong>Limit :</strong>{{ coverage
+                                                    .coverLimit
+                                                    }}</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="text-truncate"><strong>Type :</strong>{{ coverage.deductible }}</p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                {% endif %}
+                            </div>
+
+                            {% if loop.last == false %}
+                                <hr class="p-0 mt-1 bg-gradient">
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% endif %}
                 </div>
             </div>
         </div>

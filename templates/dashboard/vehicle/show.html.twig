@@ -1,0 +1,137 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block dashboardBtns %}
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a class="btn btn-success rounded-1 vehiclesList" href="{{ path('app_dashboard_vehicles') }}">List of
+                vehicles</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block dashboardBody %}
+
+    <div class="col-12">
+        <div class="card card-shadowed">
+            <header class="card-header">
+                <h6 class="card-title justify-content-between">
+                    <span>Details for vehicle Vin No. : <strong>{{ vehicle.vin }}</strong></span>
+                    <span class="float-end">
+                        <a class="btn btn-info rounded-1" href="{{ path('app_dashboard_vehicles_edit', {'id': vehicle
+                        .id}) }}"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-danger btnDeleteVehicle" href="javascript:void(0)" data-path="{{ path
+                            ('app_dashboard_vehicles_delete', {'id': vehicle.id})
+                        }}" data-vin-number="{{ vehicle.vin }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </span>
+                </h6>
+            </header>
+
+            <div class="card-body">
+                <div class="mw-800px mx-auto">
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Make :</strong>{{ vehicle.make }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Model :</strong>{{ vehicle.model }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Year :</strong>{{ vehicle.year }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Vin :</strong>{{ vehicle.vin }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Ownership :</strong>{{ vehicle.ownership }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Vin :</strong>{{ vehicle.vin }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Annual milleage :</strong>{{ vehicle.annualMilleage }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Ownership :</strong>{{ vehicle.ownership }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Usage :</strong>{{ vehicle
+                                .vehicleUsage }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Primary use :</strong>{{ vehicle.primaryUse }}</p>
+                        </div>
+                    </div>
+
+                    {% if vehicle.coverages %}
+
+                        <div class="p-2 my-2 bg-primary-subtle">
+                            <span class="text-truncate"><strong>Details of coverages</strong></span>
+                        </div>
+
+                        {% for coverage in vehicle.coverages %}
+
+                            <p class="text-truncate"><strong>Coverage {{ loop.index }}</strong></p>
+
+                            <div class="coverages-details">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Type :</strong>{{ coverage.type }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Limit :</strong>{{ coverage.coverLimit }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Deductible :</strong>{{ coverage.deductible }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if loop.last == false %}
+                                <hr class="p-0 mt-1 bg-gradient">
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.btnDeleteVehicle').on('click', function (evt) {
+                evt.preventDefault();
+
+                $.ajax({
+                    method: 'DELETE',
+                    url: $(this).attr('data-path'),
+                    cache: false,
+                    success: function(response) {
+                        if (response.success) {
+                            let alertElmt = `<div class="flash-success alert alert-success alert-dismissible fade
+                            show" role="alert" style="opacity: 500;">`;
+                            alertElmt += `The vehicle was deleted successfully`;
+                            alertElmt += `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>`;
+
+                            $(alertElmt).insertAfter('.main-title').fadeTo(2000, 500).slideUp(500, function () {
+                                $('.alert').slideUp(500);
+                                location.href = $('.vehiclesList').attr('href');
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

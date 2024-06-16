@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Vehicle;
+use App\Traits\DatalistRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,9 +13,30 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class VehicleRepository extends ServiceEntityRepository
 {
+    use DatalistRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Vehicle::class);
+    }
+
+    /**
+     * Construct SQL using options.
+     *
+     * @param array $options
+     *
+     * @return QueryBuilder
+     */
+    public function buildQuery(array $options = []): QueryBuilder
+    {
+        $query = $this->createQueryBuilder('v');
+
+        // Total
+        if (!empty($options['total'])) {
+            $query->select('count(v)');
+        }
+
+        return $query->orderBy('v.year', 'DESC');
     }
 
     //    /**

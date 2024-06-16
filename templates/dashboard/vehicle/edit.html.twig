@@ -4,7 +4,7 @@
 
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-            <a class="btn btn-success rounded-1" href="{{ path('app_dashboard_policies') }}">List of policies</a>
+            <a class="btn btn-success rounded-1" href="{{ path('app_dashboard_vehicles') }}">List of vehicles</a>
         </div>
     </div>
 
@@ -16,7 +16,7 @@
         <div class="card card-shadowed">
             <header class="card-header">
                 <h4 class="card-title">
-                    <span>{% if policy and policy.policyNo %}Modify Policy : {{ "%010d"|format(policy.policyNo) }}{% else %}New Policy{%endif %}</span>
+                    <span>{% if vehicle %}Modify Vehicle : {{ vehicle.vin }}{% else %}New Vehicle{%endif %}</span>
                 </h4>
             </header>
 
@@ -26,27 +26,46 @@
                 <div class="mw-800px mx-auto">
                     <div class="row">
                         <div class="col-6">
-                            {{ form_row(form.type) }}
+                            {{ form_row(form.make) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.model) }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            {{ form_row(form.effectiveDate) }}
+                            {{ form_row(form.year) }}
                         </div>
                         <div class="col-6">
-                            {{ form_row(form.expirationDate) }}
+                            {{ form_row(form.vin) }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            {{ form_widget(form.status) }}
+                            {{ form_row(form.annualMilleage) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.ownership) }}
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.vehicleUsage) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.primaryUse) }}
+                        </div>
+                    </div>
                     <hr>
 
                     <div class="p-2 my-2 bg-primary-subtle">
-                        <span class="text-truncate"><strong>Vehicles</strong></span>
+                        <span class="text-truncate"><strong>Coverages</strong></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_widget(form.coverages) }}
+                        </div>
                     </div>
                 </div>
             </div>

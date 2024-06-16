@@ -45,9 +45,8 @@ class Vehicle
     private ?string $ownership = null;
 
     #[ORM\ManyToOne(targetEntity: Policy::class, inversedBy: 'vehicles')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull(message: 'A policy must be related to the vehicle')]
-    private Policy $policy;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Policy $policy = null;
 
     /**
      * @var Collection<int, Coverage>

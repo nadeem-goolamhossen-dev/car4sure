@@ -123,4 +123,9 @@ class Coverage
 
         return $this;
     }
+
+    public function getLabel()
+    {
+        return $this->type . ' (limit: ' . $this->coverLimit . ', deductible: ' . $this->deductible . ')';
+    }
 }
