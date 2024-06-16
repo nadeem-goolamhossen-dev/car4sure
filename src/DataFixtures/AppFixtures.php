@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Policy;
 use App\Entity\User;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -27,6 +28,8 @@ class AppFixtures extends Fixture
      */
     private array $userList = [];
 
+    private ?User $admin = null;
+
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
@@ -44,6 +47,9 @@ class AppFixtures extends Fixture
     {
         // Create list of users
         $this->createUsers($manager);
+
+        // Create list of policies
+        $this->createPolicies($manager);
     }
 
     /**
@@ -56,11 +62,11 @@ class AppFixtures extends Fixture
     public function createUsers(ObjectManager $manager): void
     {
         // Create admin user
-        $adminUser = new User();
-        $adminUser
+        $this->admin = new User();
+        $this->admin
             ->setRoles(['ROLE_ADMIN'])
             ->setEmail('goolamhossen.nadeem@gmail.com')
-            ->setPassword($this->passwordHasher->hashPassword($adminUser, 'admin'))
+            ->setPassword($this->passwordHasher->hashPassword($this->admin, 'admin'))
             ->setFirstname('Nadeem')
             ->setLastname('Goolam Hossen')
             ->setActive(true)
@@ -68,7 +74,7 @@ class AppFixtures extends Fixture
             ->setUpdatedAt(new DateTime())
         ;
 
-        $manager->persist($adminUser);
+        $manager->persist($this->admin);
 
         // Create dummy users
         for ($u = 1; $u <= 5; $u++) {
@@ -82,14 +88,47 @@ class AppFixtures extends Fixture
                 ->setActive(true)
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
-                ->setCreatedBy($adminUser)
-                ->setUpdatedBy($adminUser)
+                ->setCreatedBy($this->admin)
+                ->setUpdatedBy($this->admin)
             ;
 
             $manager->persist($user);
 
             // Keep in array
             $this->userList[] = $user;
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * Create list of policies.
+     *
+     * @param ObjectManager $manager
+     *
+     * @return void
+     */
+    public function createPolicies(ObjectManager $manager): void
+    {
+        for ($p = 1; $p <= 5; $p++) {
+            $dateNow = $this->faker->dateTime;
+            $startDate = $dateNow->modify('-10 years');
+            $endDate = (clone $startDate)->modify('+1 years');
+
+            $policy = new Policy();
+            $policy
+                ->setPolicyNo($p)
+                ->setType('Auto')
+                ->setStatus(true)
+                ->setEffectiveDate($startDate)
+                ->setExpirationDate($endDate)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setCreatedBy($this->admin)
+                ->setUpdatedBy($this->admin)
+            ;
+
+            $manager->persist($policy);
         }
 
         $manager->flush();

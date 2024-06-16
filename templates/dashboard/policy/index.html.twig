@@ -1,0 +1,48 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block dashboardBtns %}
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a class="btn btn-success btnNewPolicy" href="{{ path('app_dashboard_policies_create') }}">New policy</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block dashboardBody %}
+
+    <table id="tblPolicies" class="table table-striped table-responsive my-3 tblDatalist">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Policy number</th>
+            <th>Type</th>
+            <th>Effective date</th>
+            <th>Expiry date</th>
+            <th>Status</th>
+            <th>Created on</th>
+            <th>Updated on</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for policy in policies %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ "%010d"|format(policy.policyNo) }}</td>
+                <td>{{ policy.type }}</td>
+                <td>{{ policy.effectiveDate|date('Y-m-d') }}</td>
+                <td>{{ policy.expirationDate|date('Y-m-d') }}</td>
+                <td>{{ (policy.status == true) ? 'Active' : 'Inactive' }}</td>
+                <td>{{ policy.createdAt|date('Y-m-d') }}</td>
+                <td>{{ policy.updatedAt|date('Y-m-d') }}</td>
+                <td>
+                    <button class="btn btn-outline-primary"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

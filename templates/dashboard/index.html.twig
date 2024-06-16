@@ -3,12 +3,11 @@
 {% block title %}Car4Sure - Dashboard{% endblock %}
 
 {% block body %}
-{#    {{ app.request.attributes.get('_route') }}#}
-{#    <label id="dashboardName" class="show">{{ activeMenu }}</label>#}
+
     <div class="container-fluid">
         <div class="row">
             <div class="navbar navbar-light sticky-top bg-light flex-md-nowrap px-2 shadow text-center">
-                <span class="navbar-brand text-start">Car4Sure</span>
+                <span class="navbar-brand text-start">Car4Sure - Dashboard</span>
                 <button class="navbar-toggler d-md-none collapsed text-end me-1" type="button" data-bs-toggle="collapse"
                         data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,10 +22,21 @@
                                 <i class="fa fa-home"></i> Dashboard
                             </a>
                         </li>
+
+                        {% if isAdmin %}
+                            <li class="nav-item">
+                                <a class="nav-link" data-app-name="app_dashboard_users" href="{{ path('app_dashboard_users') }}">
+                                    <i class="fa fa-users"></i>
+                                    Users
+                                </a>
+                            </li>
+                        {% endif %}
+
                         <li class="nav-item">
-                            <a class="nav-link" data-app-name="app_dashboard_users" href="{{ path('app_dashboard_users') }}">
-                                <i class="fa fa-users"></i>
-                                Users
+                            <a class="nav-link" data-app-name="app_dashboard_policies" href="{{ path
+                                ('app_dashboard_policies') }}">
+                                <i class="fa fa-shield" aria-hidden="true"></i>
+                                Policies
                             </a>
                         </li>
                     </ul>
@@ -35,7 +45,7 @@
 
             <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">{{ title }}</h1>
+                    <h2>{{ title }}</h2>
                     {% block dashboardBtns %}{% endblock %}
                 </div>
 
@@ -62,6 +72,10 @@
                 el.classList.add("active");
             }
         });
+
+        $('.alert').fadeTo(2000, 500).slideUp(500, function () {
+            $('.alert').slideUp(500);
+        })
     </script>
 
 {% endblock %}

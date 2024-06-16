@@ -87,12 +87,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "boolean")]
     public bool $isActive = false;
 
-    #[ORM\Column(type: 'datetime')]
-    private ?DateTime $createdAt;
-
-    #[ORM\Column(type: 'datetime')]
-    private ?DateTime $updatedAt;
-
     /**
      * Return id of user.
      *
@@ -252,7 +246,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @return bool|null
      */
-    public function getIsActive(): ?bool
+    public function isActive(): ?bool
     {
         return $this->isActive;
     }
@@ -267,50 +261,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActive(?bool $isActive): self
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Returns createdAt.
-     *
-     * @return DateTime|null
-     */
-    public function getCreatedAt(): ?DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Sets createdAt.
-     *
-     * @return $this
-     */
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Returns updatedAt.
-     *
-     * @return DateTime|null
-     */
-    public function getUpdatedAt(): ?DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @return $this
-     */
-    public function setUpdatedAt(DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }

@@ -3,27 +3,36 @@
 namespace App\Traits;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 trait LoggableEntityTrait
 {
     #[Gedmo\Blameable(on: "create")]
     #[ORM\ManyToOne(targetEntity: "App\Entity\User")]
     #[ORM\JoinColumn(name: "created_by", referencedColumnName: "id")]
-    private User $createdBy;
+    private User|UserInterface $createdBy;
 
     #[Gedmo\Blameable(on: "update")]
     #[ORM\ManyToOne(targetEntity: "App\Entity\User")]
     #[ORM\JoinColumn(name: "updated_by", referencedColumnName: "id")]
-    private User $updatedBy;
+    private User|UserInterface $updatedBy;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTime $createdAt;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTime $updatedAt;
 
     /**
      * Return created by.
      *
-     * @return User
+     * @return User|UserInterface
      */
-    public function getCreatedBy(): User
+    public function getCreatedBy(): User|UserInterface
     {
         return $this->createdBy;
     }
@@ -31,11 +40,11 @@ trait LoggableEntityTrait
     /**
      * Set created by.
      *
-     * @param User $user
+     * @param User|UserInterface $user
      *
      * @return LoggableEntityTrait
      */
-    public function setCreatedBy(User $user): static
+    public function setCreatedBy(User|UserInterface $user): static
     {
         $this->createdBy = $user;
 
@@ -45,9 +54,9 @@ trait LoggableEntityTrait
     /**
      * Return updated by.
      *
-     * @return User
+     * @return User|UserInterface
      */
-    public function getUpdatedBy(): User
+    public function getUpdatedBy(): User|UserInterface
     {
         return $this->updatedBy;
     }
@@ -55,13 +64,58 @@ trait LoggableEntityTrait
     /**
      * Set updated by.
      *
-     * @param User $user
+     * @param User|UserInterface $user
      *
      * @return LoggableEntityTrait
      */
-    public function setUpdatedBy(User $user): static
+    public function setUpdatedBy(User|UserInterface $user): static
     {
         $this->updatedBy = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * Returns createdAt.
+     *
+     * @return DateTime|null
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Sets createdAt.
+     *
+     * @return $this
+     */
+    public function setCreatedAt(DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Returns updatedAt.
+     *
+     * @return DateTime|null
+     */
+    public function getUpdatedAt(): ?DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set updatedAt.
+     *
+     * @return $this
+     */
+    public function setUpdatedAt(DateTime $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

@@ -38,7 +38,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Construction d'une requête à partir d'un ensemble de critères.
+     * Construct SQL using options.
      *
      * @param array $options
      *

@@ -7,7 +7,7 @@ use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
@@ -25,15 +25,25 @@ class UserManager
      */
     private UserRepository $userRepository;
 
+    /**
+     * @var Security
+     */
+    private Security $security;
+
+    /**
+     * @var UserPasswordHasherInterface
+     */
     private UserPasswordHasherInterface $passwordHasher;
 
     /**
      * Construct
      */
-    public function __construct(EntityManagerInterface $manager, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(EntityManagerInterface $manager, Security $security, UserRepository $userRepository,
+                                UserPasswordHasherInterface $passwordHasher)
     {
         $this->manager = $manager;
         $this->userRepository = $userRepository;
+        $this->security = $security;
         $this->passwordHasher = $passwordHasher;
     }
 
@@ -50,18 +60,22 @@ class UserManager
     /**
      * Save user.
      *
-     * @param User $user User
+     * @param User $user User to register
      *
      * @throws Exception
      */
     public function save(User $user): void
     {
-        $user->setUpdatedAt(new DateTime());
+        $user
+            ->setUpdatedAt(new DateTime())
+            ->setUpdatedBy($this->security->getUser())
+        ;
 
         if (is_null($user->getId())) {
             $user
                 ->setPassword($this->passwordHasher->hashPassword($user, 'user'))
                 ->setCreatedAt(new DateTime())
+                ->setCreatedBy($this->security->getUser())
             ;
 
             $this->manager->persist($user);
@@ -73,7 +87,7 @@ class UserManager
     /**
      * Delete user.
      *
-     * @param User $user Client à supprimer
+     * @param User $user User to delete
      *
      * @throws Exception
      */

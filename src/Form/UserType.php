@@ -35,11 +35,6 @@ class UserType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email',
             ])
-            ->add('isActive', CheckboxType::class, [
-                'required' => false,
-                'label_attr' => ['class' => 'form-check-label'],
-                'attr' => ['class' => 'form-check-input'],
-            ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'User roles',
                 'multiple' => false,
@@ -51,6 +46,11 @@ class UserType extends AbstractType
                 'attr' => [
                     'choices_per_line' => 2,
                 ]
+            ])
+            ->add('isActive', CheckboxType::class, [
+                'required' => false,
+                'label_attr' => ['class' => 'form-check-label'],
+                'attr' => ['class' => 'form-check-input'],
             ])
             ->add('register', SubmitType::class, [
                 'label' => 'Save',

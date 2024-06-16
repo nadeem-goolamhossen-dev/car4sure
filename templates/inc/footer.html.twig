@@ -4,3 +4,15 @@
         <span class="text-muted mb-auto">Developped by GOOLAM HOSSEN Nadeem</span>
     </div>
 </footer>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        new DataTable('.tblDatalist', {
+            layout: {
+                topStart: {
+                    buttons: ['excel', 'pdf', 'colvis']
+                }
+            }
+        });
+    });
+</script>

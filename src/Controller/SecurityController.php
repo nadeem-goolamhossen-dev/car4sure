@@ -15,7 +15,7 @@ class SecurityController extends AbstractController
     {
         // Left as a check if user is logged in, we redirect to dashboard
         // Main rediection is in security.yaml under form_login -> default_target_path: app_dashboard
-        if ($this->getUser()) {
+        if ($this->getUser() && $this->getUser()->isActive()) {
             return $this->redirectToRoute('app_dashboard');
         }
 
@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_logout');
         }
 
-        return $this->render('security/success.html.twig');
+        return $this->render('security/logout.html.twig');
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

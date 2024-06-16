@@ -1,0 +1,61 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block dashboardBtns %}
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a class="btn btn-success" href="{{ path('app_dashboard_policies') }}">List of policies</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block dashboardBody %}
+
+    <div class="col-12">
+        <div class="card card-shadowed">
+            <header class="card-header">
+                <h4 class="card-title">
+                    <span>Add new Policy</span>
+                </h4>
+            </header>
+
+            {{ form_start(form) }}
+
+            <div class="card-body">
+                <div class="mw-800px mx-auto">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.type) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.effectiveDate) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.expirationDate) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_widget(form.status) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="p-1 float-end">
+                {{ form_widget(form.register) }}
+            </footer>
+
+            <div class="d-none">
+                {{ form_rest(form) }}
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+{% endblock %}
