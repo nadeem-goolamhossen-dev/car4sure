@@ -5,12 +5,9 @@ namespace App\Traits;
 use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 trait LoggableEntityTrait
 {
-    use TimestampableEntity;
-
     #[Gedmo\Blameable(on: "create")]
     #[ORM\ManyToOne(targetEntity: "App\Entity\User")]
     #[ORM\JoinColumn(name: "created_by", referencedColumnName: "id")]

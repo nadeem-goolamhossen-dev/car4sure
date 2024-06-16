@@ -39,6 +39,16 @@
                     {% block dashboardBtns %}{% endblock %}
                 </div>
 
+                {# read and display all flash messages #}
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="flash-{{ label|lower }} alert alert-{{ label|lower }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
                 {% block dashboardBody %}{% endblock %}
             </div>
         </div>

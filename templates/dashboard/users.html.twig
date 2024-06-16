@@ -72,7 +72,7 @@
             <th>Status</th>
             <th>Created on</th>
             <th>Updated on</th>
-            <th>Actions</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -87,14 +87,11 @@
                 <td>{{ user.createdAt|date('Y-m-d') }}</td>
                 <td>{{ user.updatedAt|date('Y-m-d') }}</td>
                 <td>
-                    <span><button class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></button></span>
-                    <span><button class="btn btn-primary"><i class="fa fa-pencil"></i></button></span>
-                    <span><button class="btn btn-primary"><i class="fa fa-eye"></i></button></span>
+                    <button class="btn btn-outline-primary"><i class="fa fa-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
 
 {% endblock %}

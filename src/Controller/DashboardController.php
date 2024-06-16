@@ -4,7 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\UserRepository;
+use App\Service\User\UserManager;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DashboardController extends AbstractController
 {
     #[Route('/', name: 'app_dashboard')]
-    public function index(Request $request): Response
+    public function index(): Response
     {
         return $this->render('dashboard/dashboard.html.twig', [
             'title' => 'Dashboard',
@@ -25,26 +26,37 @@ class DashboardController extends AbstractController
         ]);
     }
 
+    /**
+     * Dashboard - Users
+     *
+     * @throws Exception
+     */
     #[Route('/users', name: 'app_dashboard_users')]
-    public function users(Request $request, UserRepository $userRepository): Response
+    public function users(Request $request, UserManager $userManager): Response
     {
         $user = new User();
-
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         // Form
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            //$data->isActive = $form->get('isActive')->getData();
-            dd($data);
+            try {
+                $userManager->save($form->getData());
+                $this->addFlash('Success', sprintf("The user %s has been registered successfully",
+                    $user->getFullname()));
+
+                return $this->redirectToRoute('app_dashboard_users');
+            } catch (Exception $e) {
+                $this->addFlash('Error', sprintf("An error occured while registering the user. [%s]", $e->getMessage
+                ()));
+            }
         }
 
         return $this->render('dashboard/users.html.twig', [
             'title' => 'Users',
             'activeMenu' => 'app_dashboard_users',
             'form' => $form->createView(),
-            'users' => $userRepository->findAll(),
+            'users' => $userManager->getUsers(),
         ]);
     }
 }

@@ -27,11 +27,6 @@ class AppFixtures extends Fixture
      */
     private array $userList = [];
 
-    /**
-     * @var User|null
-     */
-    private ?User $admin = null;
-
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
@@ -60,32 +55,35 @@ class AppFixtures extends Fixture
      */
     public function createUsers(ObjectManager $manager): void
     {
+        // Create admin user
+        $adminUser = new User();
+        $adminUser
+            ->setRoles(['ROLE_ADMIN'])
+            ->setEmail('goolamhossen.nadeem@gmail.com')
+            ->setPassword($this->passwordHasher->hashPassword($adminUser, 'admin'))
+            ->setFirstname('Nadeem')
+            ->setLastname('Goolam Hossen')
+            ->setActive(true)
+            ->setCreatedAt(new DateTime())
+            ->setUpdatedAt(new DateTime())
+        ;
+
+        $manager->persist($adminUser);
+
         // Create dummy users
         for ($u = 1; $u <= 5; $u++) {
-            $roles = ($u == 1) ? ['ROLE_ADMIN'] : ['ROLE_USER'];
-            $email = ($u == 1) ? 'admin@gmail.com' : sprintf('user%02d@gmail.com', ($u - 1));
-            $password = ($u == 1) ? 'admin' : 'user';
-
-
             $user = new User();
             $user
-                ->setRoles($roles)
-                ->setEmail($email)
-                ->setPassword($this->passwordHasher->hashPassword($user,$password))
+                ->setRoles(['ROLE_USER'])
+                ->setEmail(sprintf('user%02d@gmail.com', ($u)))
+                ->setPassword($this->passwordHasher->hashPassword($user, 'user'))
                 ->setFirstname($this->faker->firstName)
                 ->setLastname($this->faker->lastName)
                 ->setActive(true)
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
-            ;
-
-            if ($u == 1) {
-                $this->admin = $user;
-            }
-
-            $user
-                ->setCreatedBy($this->admin)
-                ->setUpdatedBy($this->admin)
+                ->setCreatedBy($adminUser)
+                ->setUpdatedBy($adminUser)
             ;
 
             $manager->persist($user);

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -35,16 +36,17 @@ class UserType extends AbstractType
                 'label' => 'Email',
             ])
             ->add('isActive', CheckboxType::class, [
+                'required' => false,
                 'label_attr' => ['class' => 'form-check-label'],
                 'attr' => ['class' => 'form-check-input'],
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'User roles',
-                'multiple' => true,
+                'multiple' => false,
                 'expanded' => false,
                 'choices' => [
                     'User' => 'role_user',
-                    'Admin' => 'role_admin',
+                    'Admin' => 'role_admin'
                 ],
                 'attr' => [
                     'choices_per_line' => 2,
@@ -56,6 +58,19 @@ class UserType extends AbstractType
                     'class' => 'btn btn-primary',
                 ],
             ])
+        ;
+
+        $builder->get('roles')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($rolesAsArray): string {
+                    // transform the array to string
+                    return implode(', ', $rolesAsArray);
+                },
+                function ($rolesAsArray): array {
+                    // transform the string back to an array
+                    return explode(', ', $rolesAsArray);
+                }
+            ))
         ;
     }
 

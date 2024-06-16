@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use App\Traits\LoggableEntityTrait;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -27,12 +28,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * User id
      *
-     * @var int
+     * @var int|null
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private int $id;
+    private ?int $id = null;
 
     /**
      * User email
@@ -50,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles;
+    private array $roles = [];
 
     /**
      * User hashed password
@@ -84,7 +85,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var bool
      */
     #[ORM\Column(type: "boolean")]
-    protected bool $isActive = false;
+    public bool $isActive = false;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTime $createdAt;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTime $updatedAt;
 
     /**
      * Return id of user.
@@ -127,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getFullname(): string
     {
-        return (string) $this->getLastname() . ' ' . $this->getFirstname();
+        return $this->getLastname() . ' ' . $this->getFirstname();
     }
 
     /**
@@ -137,7 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -175,7 +182,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     /**
@@ -245,7 +252,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @return bool|null
      */
-    public function isActive(): ?bool
+    public function getIsActive(): ?bool
     {
         return $this->isActive;
     }
@@ -260,6 +267,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActive(?bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Returns createdAt.
+     *
+     * @return DateTime|null
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Sets createdAt.
+     *
+     * @return $this
+     */
+    public function setCreatedAt(DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Returns updatedAt.
+     *
+     * @return DateTime|null
+     */
+    public function getUpdatedAt(): ?DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set updatedAt.
+     *
+     * @return $this
+     */
+    public function setUpdatedAt(DateTime $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
