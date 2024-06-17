@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Coverage;
+use App\Traits\DatalistRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,33 +13,34 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CoverageRepository extends ServiceEntityRepository
 {
+    use DatalistRepositoryTrait;
+
+    /**
+     * Constructor
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Coverage::class);
     }
 
-    //    /**
-    //     * @return Coverage[] Returns an array of Coverage objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Construct SQL using options
+     *
+     * @param array $options
+     *
+     * @return QueryBuilder
+     */
+    public function buildQuery(array $options = []): QueryBuilder
+    {
+        $query = $this->createQueryBuilder('c');
 
-    //    public function findOneBySomeField($value): ?Coverage
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        // Total
+        if (!empty($options['total'])) {
+            $query->select('count(c)');
+        }
+
+        return $query->orderBy('c.id', 'ASC');
+    }
 }

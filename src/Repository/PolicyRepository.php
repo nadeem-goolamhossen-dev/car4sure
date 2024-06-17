@@ -16,6 +16,11 @@ class PolicyRepository extends ServiceEntityRepository
 {
     use DatalistRepositoryTrait;
 
+    /**
+     * Constructor
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Policy::class);
@@ -40,6 +45,11 @@ class PolicyRepository extends ServiceEntityRepository
         return $query->orderBy('p.policyNo', 'DESC');
     }
 
+    /**
+     * Get last inserted id.
+     *
+     * @return int
+     */
     public function getLastInsertedId(): int
     {
         return $this->createQueryBuilder('p')
@@ -50,29 +60,4 @@ class PolicyRepository extends ServiceEntityRepository
             ->getQuery()->getSingleScalarResult()
         ;
     }
-
-    //    /**
-    //     * @return Policy[] Returns an array of Policy objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Policy
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

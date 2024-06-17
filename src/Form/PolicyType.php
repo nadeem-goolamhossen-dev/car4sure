@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Policy;
 use App\Entity\Vehicle;
-use App\Repository\VehicleRepository;
+use App\Service\Vehicle\VehicleManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -15,11 +15,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PolicyType extends AbstractType
 {
-    private VehicleRepository $vehicleRepository;
+    private VehicleManager $vehicleManager;
 
-    public function __construct(VehicleRepository $vehicleRepository)
+    public function __construct(VehicleManager $vehicleManager)
     {
-        $this->vehicleRepository = $vehicleRepository;
+        $this->vehicleManager = $vehicleManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -39,7 +39,9 @@ class PolicyType extends AbstractType
                 'class' => Vehicle::class,
                 'choice_label' => 'label',
                 'multiple' => true,
-                'choices' => $this->vehicleRepository->findAll(),
+                'choices' => $this->vehicleManager->getVehicles([
+                    'hasPolicy' => false,
+                ]),
                 'by_reference' => false,
             ])
             ->add('status', CheckboxType::class, [

@@ -15,6 +15,11 @@ class VehicleRepository extends ServiceEntityRepository
 {
     use DatalistRepositoryTrait;
 
+    /**
+     * Constructor
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Vehicle::class);
@@ -36,31 +41,30 @@ class VehicleRepository extends ServiceEntityRepository
             $query->select('count(v)');
         }
 
+        // Conditions
+        if (isset($options['hasPolicy'])) {
+            $query = $this->hasPolicyCondition($query, $options['hasPolicy']);
+        }
+
         return $query->orderBy('v.year', 'DESC');
     }
 
-    //    /**
-    //     * @return Vehicle[] Returns an array of Vehicle objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Add to SQL a clause to fetch only vehicles
+     *
+     * @param QueryBuilder $query
+     * @param $hasPolicy
+     *
+     * @return QueryBuilder
+     */
+    public function hasPolicyCondition(QueryBuilder $query, $hasPolicy):QueryBuilder
+    {
+        if (!$hasPolicy) {
+            $query = $query->andWhere($query->expr()->isNull('v.policy'));
+        } else {
+            $query = $query->andWhere($query->expr()->isNotNull('v.policy'));
+        }
 
-    //    public function findOneBySomeField($value): ?Vehicle
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        return $query;
+    }
 }
