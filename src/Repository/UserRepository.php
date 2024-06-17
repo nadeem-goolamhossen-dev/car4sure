@@ -53,11 +53,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $query = $this->createQueryBuilder('u');
 
-        // Total
-        if (!empty($options['total'])) {
-            $query->select('count(u)');
-        }
-
         return $query->orderBy('u.lastname')
             ->addOrderBy('u.firstname')
         ;

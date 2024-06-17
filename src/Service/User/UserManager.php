@@ -5,6 +5,7 @@ namespace App\Service\User;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -47,12 +48,26 @@ class UserManager
         $this->passwordHasher = $passwordHasher;
     }
 
-    public function getUsers(array $options = [])
+    /**
+     * Get users
+     *
+     * @param array $options
+     *
+     * @return ArrayCollection
+     */
+    public function getUsers(array $options = []): ArrayCollection
     {
         return $this->userRepository->findAllWithOptions($options);
     }
 
-    public function getUser(array $options = [])
+    /**
+     * Get a user
+     *
+     * @param array $options
+     *
+     * @return User
+     */
+    public function getUser(array $options = []): User
     {
         return $this->userRepository->findOneWithOptions($options);
     }

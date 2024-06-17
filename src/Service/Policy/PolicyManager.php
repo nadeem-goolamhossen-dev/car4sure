@@ -3,15 +3,12 @@
 namespace App\Service\Policy;
 
 use App\Entity\Policy;
-use App\Entity\User;
 use App\Repository\PolicyRepository;
-use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Manage Policy
@@ -43,18 +40,42 @@ class PolicyManager
         $this->policyRepository = $policyRepository;
     }
 
-    public function getPolicies(array $options = [])
+    /**
+     * Count policies
+     *
+     * @return int
+     */
+    public function getPoliciesCount(): int
+    {
+        return count($this->policyRepository->findAll());
+    }
+
+    /**
+     * Get poliies
+     *
+     * @param array $options
+     *
+     * @return ArrayCollection
+     */
+    public function getPolicies(array $options = []): ArrayCollection
     {
         return $this->policyRepository->findAllWithOptions($options);
     }
 
-    public function getPolicy(array $options = [])
+    /**
+     * Get a policy
+     *
+     * @param array $options
+     *
+     * @return Policy
+     */
+    public function getPolicy(array $options = []): Policy
     {
         return $this->policyRepository->findOneWithOptions($options);
     }
 
     /**
-     * Save user.
+     * Save policy.
      *
      * @param Policy $policy Policy to register
      *

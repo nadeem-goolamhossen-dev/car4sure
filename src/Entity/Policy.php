@@ -46,7 +46,7 @@ class Policy
     /**
      * @var Collection<int, Vehicle>
      */
-    #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'policy')]
+    #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'policy', cascade: ['persist'])]
     private Collection $vehicles;
 
     public function __construct()

@@ -36,11 +36,6 @@ class CoverageRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('c');
 
-        // Total
-        if (!empty($options['total'])) {
-            $query->select('count(c)');
-        }
-
         return $query->orderBy('c.id', 'ASC');
     }
 }

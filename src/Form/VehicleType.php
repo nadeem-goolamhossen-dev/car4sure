@@ -4,38 +4,74 @@ namespace App\Form;
 
 use App\Entity\Coverage;
 use App\Entity\Vehicle;
-use App\Repository\CoverageRepository;
+use App\Service\Coverage\CoverageManager;
+use Doctrine\DBAL\Types\BigIntType;
+use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VehicleType extends AbstractType
 {
-    private CoverageRepository $coverageRepository;
+    /**
+     * @var CoverageManager
+     */
+    private CoverageManager $coverageManager;
 
-    public function __construct(CoverageRepository $coverageRepository)
+    /**
+     * Constructor
+     *
+     * @param CoverageManager $coverageManager
+     */
+    public function __construct(CoverageManager $coverageManager)
     {
-        $this->coverageRepository = $coverageRepository;
+        $this->coverageManager = $coverageManager;
     }
 
+    /**
+     * Build form
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     *
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('year')
-            ->add('make')
-            ->add('model')
-            ->add('vin')
-            ->add('vehicleUsage')
-            ->add('primaryUse')
-            ->add('annualMilleage')
-            ->add('ownership')
+            ->add('year', NumberType::class, [
+                'label' => 'Year',
+            ])
+            ->add('make', TextType::class, [
+                'label' => 'Make'
+            ])
+            ->add('model', TextType::class, [
+                'label' => 'Model'
+            ])
+            ->add('vin', NumberType::class, [
+                'label' => 'VIN'
+            ])
+            ->add('vehicleUsage', TextType::class, [
+                'label' => 'Usage'
+            ])
+            ->add('primaryUse', TextType::class, [
+                'label' => 'Primary use'
+            ])
+            ->add('annualMilleage', NumberType::class, [
+                'label' => 'Annual milleage'
+            ])
+            ->add('ownership', TextType::class, [
+                'label' => 'Ownership'
+            ])
             ->add('coverages', EntityType::class, [
                 'class' => Coverage::class,
                 'choice_label' => 'label',
                 'multiple' => true,
-                'choices' => $this->coverageRepository->findAll(),
+                'choices' => $this->coverageManager->getCoverages(),
             ])
             ->add('register', SubmitType::class, [
                 'label' => 'Save',
@@ -46,6 +82,13 @@ class VehicleType extends AbstractType
         ;
     }
 
+    /**
+     * Configuration
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

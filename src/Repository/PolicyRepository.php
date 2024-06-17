@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Policy;
 use App\Traits\DatalistRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,11 +35,6 @@ class PolicyRepository extends ServiceEntityRepository
     public function buildQuery(array $options = []): QueryBuilder
     {
         $query = $this->createQueryBuilder('p');
-
-        // Total
-        if (!empty($options['total'])) {
-            $query->select('count(p)');
-        }
 
         return $query->orderBy('p.policyNo', 'DESC');
     }

@@ -36,11 +36,6 @@ class VehicleRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('v');
 
-        // Total
-        if (!empty($options['total'])) {
-            $query->select('count(v)');
-        }
-
         // Conditions
         if (isset($options['hasPolicy'])) {
             $query = $this->hasPolicyCondition($query, $options['hasPolicy']);

@@ -5,6 +5,7 @@ namespace App\Service\Coverage;
 use App\Entity\Coverage;
 use App\Repository\CoverageRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -39,18 +40,32 @@ class CoverageManager
         $this->coverageRepository = $coverageRepository;
     }
 
-    public function getCevorages(array $options = [])
+    /**
+     * Get coverages
+     *
+     * @param array $options
+     *
+     * @return ArrayCollection
+     */
+    public function getCoverages(array $options = []): ArrayCollection
     {
         return $this->coverageRepository->findAllWithOptions($options);
     }
 
-    public function getCoverage(array $options = [])
+    /**
+     * Get a coverage
+     *
+     * @param array $options
+     *
+     * @return Coverage
+     */
+    public function getCoverage(array $options = []): Coverage
     {
         return $this->coverageRepository->findOneWithOptions($options);
     }
 
     /**
-     * Save user.
+     * Save coverage.
      *
      * @param Coverage $coverage Coverage to register
      *

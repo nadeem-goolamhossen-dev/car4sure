@@ -2,18 +2,13 @@
 
 namespace App\Service\Vehicle;
 
-use App\Entity\Policy;
-use App\Entity\User;
 use App\Entity\Vehicle;
-use App\Repository\PolicyRepository;
-use App\Repository\UserRepository;
 use App\Repository\VehicleRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Manage Vehicle
@@ -45,18 +40,42 @@ class VehicleManager
         $this->vehicleRepository = $vehicleRepository;
     }
 
-    public function getVehicles(array $options = [])
+    /**
+     * Count vehicles
+     *
+     * @return int
+     */
+    public function getVehiclesCount(): int
+    {
+        return count($this->vehicleRepository->findAll());
+    }
+
+    /**
+     * Get vehicles
+     *
+     * @param array $options
+     *
+     * @return ArrayCollection
+     */
+    public function getVehicles(array $options = []): ArrayCollection
     {
         return $this->vehicleRepository->findAllWithOptions($options);
     }
 
-    public function getVehicle(array $options = [])
+    /**
+     * Get a vehicle
+     *
+     * @param array $options
+     *
+     * @return Vehicle
+     */
+    public function getVehicle(array $options = []): Vehicle
     {
         return $this->vehicleRepository->findOneWithOptions($options);
     }
 
     /**
-     * Save user.
+     * Save vehicle.
      *
      * @param Vehicle $vehicle Vehicle to register
      *
@@ -82,7 +101,7 @@ class VehicleManager
     }
 
     /**
-     * Delete policy.
+     * Delete vehicle.
      *
      * @param Vehicle $vehicle Vehicle to delete
      *

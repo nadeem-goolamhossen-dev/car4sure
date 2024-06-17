@@ -15,13 +15,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PolicyType extends AbstractType
 {
+    /**
+     * @var VehicleManager
+     */
     private VehicleManager $vehicleManager;
 
+    /**
+     * Constructor
+     *
+     * @param VehicleManager $vehicleManager
+     */
     public function __construct(VehicleManager $vehicleManager)
     {
         $this->vehicleManager = $vehicleManager;
     }
 
+    /**
+     * Build form
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     *
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -59,6 +75,13 @@ class PolicyType extends AbstractType
         ;
     }
 
+    /**
+     * Configurations
+     *
+     * @param OptionsResolver $resolver
+     *
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
