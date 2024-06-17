@@ -91,25 +91,65 @@
                                     </div>
                                 </div>
 
+
+                                {# Vehicles Coverages Details #}
+                                {% if vehicle.garagingAddress %}
+                                    {% set garagingAddress = vehicle.garagingAddress %}
+
+                                    <hr class="p-0 mt-1 bg-gradient">
+
+                                    <div class="p-1 my-2">
+                                        <span class="text-truncate"><strong>Garaging address</strong></span>
+                                    </div>
+
+                                    <div class="garaging-address-details p-1">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-truncate"><strong>Street :</strong>{{ garagingAddress.street }}</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-truncate"><strong>City :</strong>{{ garagingAddress.city }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-truncate"><strong>City :</strong>{{ garagingAddress.city }}</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-truncate"><strong>State :</strong>{{ garagingAddress.state }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+
                                 {% if vehicle.coverages %}
-                                    <div class="p-2 my-2 bg-dark-subtle">
+
+                                    <div class="p-2 my-2 bg-primary-subtle">
                                         <span class="text-truncate"><strong>Coverages</strong></span>
                                     </div>
 
                                     {% for coverage in vehicle.coverages %}
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <p class="text-truncate"><strong>Type :</strong>{{ coverage.type }}</p>
-                                            </div>
-                                            <div class="col-4">
-                                                <p class="text-truncate"><strong>Limit :</strong>{{ coverage
-                                                    .coverLimit
-                                                    }}</p>
-                                            </div>
-                                            <div class="col-4">
-                                                <p class="text-truncate"><strong>Type :</strong>{{ coverage.deductible }}</p>
+
+                                        <div class="coverages-details p-1">
+                                            <p class="text-truncate"><strong>Coverage {{ loop.index }}</strong></p>
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <p class="text-truncate"><strong>Type :</strong>{{ coverage.type }}</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="text-truncate"><strong>Limit :</strong>{{ coverage.coverLimit }}</p>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="text-truncate"><strong>Deductible :</strong>{{ coverage.deductible }}</p>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        {% if loop.last == false %}
+                                            <hr class="p-0 mt-1 bg-gradient">
+                                        {% endif %}
+
                                     {% endfor %}
 
                                 {% endif %}
