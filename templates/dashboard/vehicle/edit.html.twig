@@ -60,6 +60,30 @@
                     <hr>
 
                     <div class="p-2 my-2 bg-primary-subtle">
+                        <span class="text-truncate"><strong>Garaging address</strong></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.garagingAddress.street) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.garagingAddress.city) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.garagingAddress.state) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.garagingAddress.zip) }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="p-2 my-2 bg-primary-subtle">
                         <span class="text-truncate"><strong>Coverages</strong></span>
                     </div>
 

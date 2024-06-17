@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Address;
 use App\Entity\Vehicle;
 use App\Traits\DatalistRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

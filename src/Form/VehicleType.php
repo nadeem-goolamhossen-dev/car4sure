@@ -2,13 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Address;
 use App\Entity\Coverage;
 use App\Entity\Vehicle;
 use App\Service\Coverage\CoverageManager;
-use Doctrine\DBAL\Types\BigIntType;
-use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -72,6 +72,9 @@ class VehicleType extends AbstractType
                 'choice_label' => 'label',
                 'multiple' => true,
                 'choices' => $this->coverageManager->getCoverages(),
+            ])
+            ->add('garagingAddress', AddressType::class, [
+                'label' => 'Garaging address',
             ])
             ->add('register', SubmitType::class, [
                 'label' => 'Save',

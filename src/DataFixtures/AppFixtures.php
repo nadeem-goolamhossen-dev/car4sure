@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Constant\Coverage\CoverageConstant;
+use App\Entity\Address;
 use App\Entity\Coverage;
 use App\Entity\Policy;
 use App\Entity\User;
@@ -160,6 +161,58 @@ class AppFixtures extends Fixture
     }
 
     /**
+     * Create list of coverages.
+     *
+     * @param ObjectManager $manager
+     *
+     * @return void
+     */
+    public function createVehicles(ObjectManager $manager): void
+    {
+        for ($v = 1; $v < 5; $v++) {
+            // Create garaging address
+            $address = new Address();
+            $address
+                ->setStreet($this->faker->streetAddress)
+                ->setCity($this->faker->city)
+                ->setState($this->faker->countryCode)
+                ->setZip($this->faker->numerify('#####'))
+            ;
+
+            $vehicle = new Vehicle();
+            $vehicle
+                ->setYear($this->faker->year)
+                ->setMake($this->faker->realText(10))
+                ->setModel($this->faker->realText(10))
+                ->setVin($this->faker->numerify('#################'))
+                ->setVehicleUsage($this->faker->realText(10))
+                ->setPrimaryUse($this->faker->realText(15))
+                ->setAnnualMilleage($this->faker->numberBetween(1000, 50000))
+                ->setOwnership($this->faker->randomElement(['leased', 'owned']))
+                ->setGaragingAddress($address)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setCreatedBy($this->admin)
+                ->setUpdatedBy($this->admin)
+            ;
+
+            // Add coverages to vehicle
+            $randomNum = $this->faker->numberBetween(1, count($this->coverages));
+
+            for ($vc = 1; $vc < $randomNum; $vc++) {
+                $vehicle->addCoverage($this->coverages[$vc]);
+            }
+
+            $manager->persist($vehicle);
+
+            // Keep in array
+            $this->vehicles[] = $vehicle;
+        }
+
+        $manager->flush();
+    }
+
+    /**
      * Create list of policies.
      *
      * @param ObjectManager $manager
@@ -197,48 +250,6 @@ class AppFixtures extends Fixture
 
             // Keep in array
             $this->policies[] = $policy;
-        }
-
-        $manager->flush();
-    }
-
-    /**
-     * Create list of coverages.
-     *
-     * @param ObjectManager $manager
-     *
-     * @return void
-     */
-    public function createVehicles(ObjectManager $manager): void
-    {
-        for ($v = 1; $v < 5; $v++) {
-            $vehicle = new Vehicle();
-            $vehicle
-                ->setYear($this->faker->year)
-                ->setMake($this->faker->realText(10))
-                ->setModel($this->faker->realText(10))
-                ->setVin($this->faker->numerify('#################'))
-                ->setVehicleUsage($this->faker->realText(10))
-                ->setPrimaryUse($this->faker->realText(15))
-                ->setAnnualMilleage($this->faker->numberBetween(1000, 50000))
-                ->setOwnership($this->faker->randomElement(['leased', 'owned']))
-                ->setCreatedAt(new DateTime())
-                ->setUpdatedAt(new DateTime())
-                ->setCreatedBy($this->admin)
-                ->setUpdatedBy($this->admin)
-            ;
-
-            // Add coverages to vehicle
-            $randomNum = $this->faker->numberBetween(1, count($this->coverages));
-
-            for ($vc = 1; $vc < $randomNum; $vc++) {
-                $vehicle->addCoverage($this->coverages[$vc]);
-            }
-
-            $manager->persist($vehicle);
-
-            // Keep in array
-            $this->vehicles[] = $vehicle;
         }
 
         $manager->flush();
