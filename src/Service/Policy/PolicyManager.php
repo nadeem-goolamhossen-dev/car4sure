@@ -55,9 +55,9 @@ class PolicyManager
      *
      * @param array $options
      *
-     * @return ArrayCollection
+     * @return mixed
      */
-    public function getPolicies(array $options = []): ArrayCollection
+    public function getPolicies(array $options = []): mixed
     {
         return $this->policyRepository->findAllWithOptions($options);
     }

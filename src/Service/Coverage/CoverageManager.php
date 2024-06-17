@@ -45,9 +45,9 @@ class CoverageManager
      *
      * @param array $options
      *
-     * @return ArrayCollection
+     * @return mixed
      */
-    public function getCoverages(array $options = []): ArrayCollection
+    public function getCoverages(array $options = []): mixed
     {
         return $this->coverageRepository->findAllWithOptions($options);
     }

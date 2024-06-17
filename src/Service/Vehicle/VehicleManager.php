@@ -55,9 +55,9 @@ class VehicleManager
      *
      * @param array $options
      *
-     * @return ArrayCollection
+     * @return mixed
      */
-    public function getVehicles(array $options = []): ArrayCollection
+    public function getVehicles(array $options = []): mixed
     {
         return $this->vehicleRepository->findAllWithOptions($options);
     }
