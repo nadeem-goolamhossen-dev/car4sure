@@ -35,12 +35,15 @@ class PolicyType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('vehicles', EntityType::class, [
+                'label' => false,
                 'class' => Vehicle::class,
                 'choice_label' => 'label',
                 'multiple' => true,
                 'choices' => $this->vehicleRepository->findAll(),
+                'by_reference' => false,
             ])
             ->add('status', CheckboxType::class, [
+                'label' => 'Is active',
                 'required' => false,
                 'label_attr' => ['class' => 'form-check-label'],
                 'attr' => ['class' => 'form-check-input'],

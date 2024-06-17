@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VehicleRepository::class)]
 #[ORM\Table(name: '`vehicle`')]
@@ -45,15 +44,14 @@ class Vehicle
     #[ORM\Column(length: 255)]
     private ?string $ownership = null;
 
-    #[ORM\ManyToOne(targetEntity: Policy::class, inversedBy: 'vehicles')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Policy $policy = null;
-
     /**
      * @var Collection<int, Coverage>
      */
     #[ORM\ManyToMany(targetEntity: Coverage::class, inversedBy: 'vehicles')]
     private Collection $coverages;
+
+    #[ORM\ManyToOne(inversedBy: 'vehicles')]
+    private ?Policy $policy = null;
 
     public function __construct()
     {
@@ -161,18 +159,6 @@ class Vehicle
         return $this;
     }
 
-    public function getPolicy(): ?Policy
-    {
-        return $this->policy;
-    }
-
-    public function setPolicy(?Policy $policy): static
-    {
-        $this->policy = $policy;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Coverage>
      */
@@ -200,5 +186,17 @@ class Vehicle
     public function getLabel(): string
     {
         return $this->make . ' (model: ' . $this->model . ', year: ' . $this->year . ', vin:' . $this->vin . ')';
+    }
+
+    public function getPolicy(): ?Policy
+    {
+        return $this->policy;
+    }
+
+    public function setPolicy(?Policy $policy): static
+    {
+        $this->policy = $policy;
+
+        return $this;
     }
 }

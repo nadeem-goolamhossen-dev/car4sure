@@ -69,11 +69,11 @@ class AppFixtures extends Fixture
         // Create list of coverages
         $this->createCoverages($manager);
 
-        // Create list of policies
-        $this->createPolicies($manager);
-
         // Create list of vehicles
         $this->createVehicles($manager);
+
+        // Create list of policies
+        $this->createPolicies($manager);
     }
 
     /**
@@ -187,11 +187,11 @@ class AppFixtures extends Fixture
             ;
 
             // Add vehicles to policy
-            /*$randomNum = $this->faker->numberBetween(1, count($this->vehicles));
+            $randomNum = $this->faker->numberBetween(1, count($this->vehicles));
 
             for ($pv = 1; $pv < $randomNum; $pv++) {
                 $policy->addVehicle($this->vehicles[$pv]);
-            }*/
+            }
 
             $manager->persist($policy);
 
@@ -222,7 +222,6 @@ class AppFixtures extends Fixture
                 ->setPrimaryUse($this->faker->realText(15))
                 ->setAnnualMilleage($this->faker->numberBetween(1000, 50000))
                 ->setOwnership($this->faker->randomElement(['leased', 'owned']))
-                ->setPolicy($this->faker->randomElement($this->policies))
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
                 ->setCreatedBy($this->admin)
