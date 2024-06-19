@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PolicyRepository::class)]
 #[ORM\Table(name: '`policy`')]
@@ -37,15 +36,14 @@ class Policy
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $expirationDate = null;
 
-    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'policies')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Person $holder = null;
-
     /**
      * @var Collection<int, Vehicle>
      */
     #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'policy', cascade: ['persist'])]
     private Collection $vehicles;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Person $holder = null;
 
     public function __construct()
     {
@@ -117,18 +115,6 @@ class Policy
         return $this;
     }
 
-    public function getHolder(): ?Person
-    {
-        return $this->holder;
-    }
-
-    public function setHolder(?Person $holder): static
-    {
-        $this->holder = $holder;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Vehicle>
      */
@@ -155,6 +141,18 @@ class Policy
                 $vehicle->setPolicy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHolder(): ?Person
+    {
+        return $this->holder;
+    }
+
+    public function setHolder(?Person $holder): static
+    {
+        $this->holder = $holder;
 
         return $this;
     }
