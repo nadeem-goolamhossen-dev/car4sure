@@ -46,12 +46,19 @@ class PolicyRepository extends ServiceEntityRepository
      */
     public function getLastInsertedId(): int
     {
-        return $this->createQueryBuilder('p')
-            ->select('p0.id')
+        $result = $this->createQueryBuilder('p')
+            ->select('DISTINCT p0.id')
             ->from(Policy::class, 'p0')
             ->orderBy('p0.id', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()->getSingleScalarResult()
+            ->getQuery()->getArrayResult()
         ;
+
+        $lastInsertedId = 0;
+
+        if (count($result) > 0) {
+            $lastInsertedId = $result['0']['id'];
+        }
+
+        return $lastInsertedId;
     }
 }

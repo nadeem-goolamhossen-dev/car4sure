@@ -5,7 +5,6 @@ namespace App\Service\Vehicle;
 use App\Entity\Vehicle;
 use App\Repository\VehicleRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;

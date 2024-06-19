@@ -28,27 +28,33 @@
         </tr>
         </thead>
         <tbody>
-        {% for policy in policies %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ "%010d"|format(policy.policyNo) }}</td>
-                <td>{{ policy.type }}</td>
-                <td>{{ policy.effectiveDate|date('Y-m-d') }}</td>
-                <td>{{ policy.expirationDate|date('Y-m-d') }}</td>
-                <td>{{ (policy.status == true) ? 'Active' : 'Inactive' }}</td>
-                <td>{{ policy.createdAt|date('Y-m-d') }}</td>
-                <td>{{ policy.updatedAt|date('Y-m-d') }}</td>
-                <td>
-                    <a class="btn btn-outline-primary" href="{{ path('app_dashboard_policies_show', {'id':
-                        policy.id}) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                    <a class="btn btn-outline-info" href="{{ path('app_dashboard_policies_edit', {'id':
-                        policy.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    <a class="btn btn-outline-danger btnDeletePolicy" href="javascript:void(0)" data-path="{{ path
-                        ('app_dashboard_policies_delete', {'id': policy.id})
-                    }}" data-policy-number="{{ policy.policyNo }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-        {% endfor %}
+
+        {% if policies %}
+
+            {% for policy in policies %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ "%010d"|format(policy.policyNo) }}</td>
+                    <td>{{ policy.type }}</td>
+                    <td>{{ policy.effectiveDate|date('Y-m-d') }}</td>
+                    <td>{{ policy.expirationDate|date('Y-m-d') }}</td>
+                    <td>{{ (policy.status == true) ? 'Active' : 'Inactive' }}</td>
+                    <td>{{ policy.createdAt|date('Y-m-d') }}</td>
+                    <td>{{ policy.updatedAt|date('Y-m-d') }}</td>
+                    <td>
+                        <a class="btn btn-outline-primary" href="{{ path('app_dashboard_policies_show', {'id':
+                            policy.id}) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        <a class="btn btn-outline-info" href="{{ path('app_dashboard_policies_edit', {'id':
+                            policy.id}) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a class="btn btn-outline-danger btnDeletePolicy" href="javascript:void(0)" data-path="{{ path
+                            ('app_dashboard_policies_delete', {'id': policy.id})
+                        }}" data-policy-number="{{ policy.policyNo }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        {% endif %}
+
         </tbody>
     </table>
 
@@ -75,7 +81,7 @@
                             </div>`;
 
                             $(alertElmt).insertAfter('.main-title').fadeTo(2000, 500).slideUp(500, function () {
-                                $('.alert').slideUp(500);
+                                $('.alert').slideUp(1000);
                                 location.reload();
                             });
                         }

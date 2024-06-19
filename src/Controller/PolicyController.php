@@ -45,7 +45,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * Create policy
+     * Create & edit policy
      *
      * @throws Exception
      */
@@ -74,6 +74,7 @@ class PolicyController extends AbstractController
 
                 return $this->redirectToRoute('app_dashboard_policies');
             } catch (Exception $e) {
+                dd($e->getMessage());
                 $this->addFlash('Error', sprintf("An error occured while saving the policy. [%s]", $e->getMessage
                 ()));
             }
@@ -99,7 +100,7 @@ class PolicyController extends AbstractController
         try {
             $policyManager->delete($policy);
         } catch (Exception $e) {
-            $this->addFlash('Error', sprintf("Unable to delete this policy",));
+            $this->addFlash('Error', 'Unable to delete this policy');
             return $this->json(['success' => false]);
         }
 
@@ -112,7 +113,7 @@ class PolicyController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/policies/{id}/show', name: 'app_dashboard_policies_show', methods: ['GET'])]
-    public function show(Policy $policy,  PolicyManager $policyManager): Response
+    public function show(Policy $policy): Response
     {
         return $this->render('dashboard/policy/show.html.twig', [
             'title' => 'Policies',

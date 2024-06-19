@@ -12,7 +12,7 @@
 
 {% block dashboardBody %}
 
-    <div class="col-12">
+    <div class="col-12" data-turbo="false">
         <div class="card card-shadowed">
             <header class="card-header">
                 <h4 class="card-title">
@@ -43,7 +43,26 @@
                         </div>
                     </div>
 
-                    <hr>
+                    <div class="p-2 my-2 bg-primary-subtle">
+                        <span class="text-truncate"><strong>Holder</strong></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            {% if policy and policy.holder %}
+                                {% set holderAddress = policy.holder.personAddress %}
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="text-truncate">
+                                            <strong>Fullname :</strong>{{ policy.holder.fullname }}
+                                        </p>
+                                    </div>
+                                </div>
+                            {% else %}
+                                {{ form_widget(form.holder) }}
+                            {% endif %}
+                        </div>
+                    </div>
 
                     <div class="p-2 my-2 bg-primary-subtle">
                         <span class="text-truncate"><strong>Vehicles</strong></span>

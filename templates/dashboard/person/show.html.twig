@@ -1,0 +1,175 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block dashboardBtns %}
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a class="btn btn-success rounded-1 personsList" href="{{ path('app_dashboard_persons') }}">List of
+                persons</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block dashboardBody %}
+
+    <div class="col-12">
+        <div class="card card-shadowed">
+            <header class="card-header">
+                <h6 class="card-title justify-content-between">
+                    <span>Details for <strong>{{ person.fullname }}</strong></span>
+                    <span class="float-end">
+                        <a class="btn btn-info rounded-1" href="{{ path('app_dashboard_persons_edit', {'id': person
+                        .id}) }}"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-danger btnDeletePerson" href="javascript:void(0)" data-path="{{ path
+                            ('app_dashboard_persons_delete', {'id': person.id})
+                        }}" data-id="{{ person.id }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </span>
+                </h6>
+            </header>
+
+            <div class="card-body">
+                <div class="mw-800px mx-auto">
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Firstname :</strong>{{ person.fullname }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Lastname :</strong>{{ person.lastname }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Age :</strong>{{ person.age }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="text-truncate">
+                                <strong>Gender :</strong>{{ (person.gender) == 'M' ? 'Male' : 'Female' }}
+                            </p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Marital status :</strong>{{ person.maritalStatus }}</p>
+                        </div>
+
+{#                        {% if person.policies %}#}
+{#                            <div class="col-4">#}
+{#                                <p class="text-truncate">#}
+{#                                    <strong>Holder of policy :</strong>#}
+{#                                    <a href="{{ path('app_dashboard_policies_show', {'id': person.policy.id}) }}">#}
+{#                                        {{ "%010d"|format(person.policy.policyNo) }}#}
+{#                                    </a>#}
+{#                                </p>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+                    </div>
+
+                    {# Person Policies Details #}
+                    {% if person.policies %}
+
+                        <div class="p-2 my-2 bg-primary-subtle">
+                            <span class="text-truncate"><strong>Policies</strong></span>
+                        </div>
+
+                        {% for policy in person.policies %}
+
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                    {# Person Address Details #}
+                    {% if person.personAddress %}
+                        {% set address = person.personAddress %}
+
+                        <div class="p-2 my-2 bg-primary-subtle">
+                            <span class="text-truncate"><strong>Address</strong></span>
+                        </div>
+
+                        <div class="garaging-address-details p-1">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-truncate"><strong>Street :</strong>{{ address.street }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-truncate"><strong>City :</strong>{{ address.city }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-truncate"><strong>City :</strong>{{ address.city }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-truncate"><strong>State :</strong>{{ address.state }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                    {# Person License Details #}
+                    {% if person.personLicense %}
+                        {% set license = person.personLicense %}
+
+                        <div class="p-2 my-2 bg-primary-subtle">
+                            <span class="text-truncate"><strong>License Details</strong></span>
+                        </div>
+
+                        <div class="license-details p-1">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-truncate"><strong>Number :</strong>{{ license.number }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-truncate"><strong>State :</strong>{{ license.state }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="text-truncate">
+                                        <strong>Effective date :</strong>{{ license.effectiveDate|date('Y-m-d') }}
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="text-truncate">
+                                        <strong>Expiry date :</strong>{{ license.expirationDate|date('Y-m-d') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.btnDeletePerson').on('click', function (evt) {
+                evt.preventDefault();
+
+                $.ajax({
+                    method: 'DELETE',
+                    url: $(this).attr('data-path'),
+                    cache: false,
+                    success: function(response) {
+                        if (response.success) {
+                            let alertElmt = `<div class="flash-success alert alert-success alert-dismissible fade
+                            show" role="alert" style="opacity: 500;">`;
+                            alertElmt += `The person was deleted successfully`;
+                            alertElmt += `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>`;
+
+                            $(alertElmt).insertAfter('.main-title').fadeTo(2000, 500).slideUp(500, function () {
+                                $('.alert').slideUp(1000);
+                                location.href = $('.personsList').attr('href');
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

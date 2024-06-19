@@ -50,11 +50,11 @@ class Vehicle
     #[ORM\ManyToMany(targetEntity: Coverage::class, inversedBy: 'vehicles')]
     private Collection $coverages;
 
-    #[ORM\ManyToOne(inversedBy: 'vehicles')]
-    private ?Policy $policy = null;
-
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Address $garagingAddress = null;
+
+    #[ORM\ManyToOne(inversedBy: 'vehicles')]
+    private ?Policy $policy = null;
 
     public function __construct()
     {
@@ -186,18 +186,6 @@ class Vehicle
         return $this;
     }
 
-    public function getPolicy(): ?Policy
-    {
-        return $this->policy;
-    }
-
-    public function setPolicy(?Policy $policy): static
-    {
-        $this->policy = $policy;
-
-        return $this;
-    }
-
     public function getLabel(): string
     {
         return $this->make . ' (model: ' . $this->model . ', year: ' . $this->year . ', vin:' . $this->vin . ')';
@@ -215,4 +203,15 @@ class Vehicle
         return $this;
     }
 
+    public function getPolicy(): ?Policy
+    {
+        return $this->policy;
+    }
+
+    public function setPolicy(?Policy $policy): static
+    {
+        $this->policy = $policy;
+
+        return $this;
+    }
 }

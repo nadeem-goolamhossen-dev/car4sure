@@ -5,7 +5,6 @@ namespace App\Service\Coverage;
 use App\Entity\Coverage;
 use App\Repository\CoverageRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;

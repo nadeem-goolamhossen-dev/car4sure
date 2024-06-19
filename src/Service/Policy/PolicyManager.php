@@ -5,7 +5,6 @@ namespace App\Service\Policy;
 use App\Entity\Policy;
 use App\Repository\PolicyRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -90,6 +89,7 @@ class PolicyManager
 
         if (is_null($policy->getId())) {
             $policyNumber = $this->policyRepository->getLastInsertedId() + 1;
+
             $policy
                 ->setPolicyNo($policyNumber)
                 ->setCreatedAt(new DateTime())

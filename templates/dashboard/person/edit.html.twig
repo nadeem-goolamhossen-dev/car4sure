@@ -1,0 +1,121 @@
+{% extends 'dashboard/index.html.twig' %}
+
+{% block dashboardBtns %}
+
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a class="btn btn-success rounded-1" href="{{ path('app_dashboard_persons') }}">List of persons</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block dashboardBody %}
+
+    <div class="col-12" data-turbo="false">
+        <div class="card card-shadowed">
+            <header class="card-header">
+                <h4 class="card-title">
+                    <span>{% if person %}Modify Person : {{ person.fullname }}{% else %}New Person{%endif %}</span>
+                </h4>
+            </header>
+
+            {{ form_start(form, { attr: { id: 'sport_meetup_form' } }) }}
+
+            <div class="card-body">
+                <div class="mw-800px mx-auto">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.firstname) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.lastname) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.gender) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.age) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.maritalStatus) }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="p-2 my-2 bg-primary-subtle">
+                        <span class="text-truncate"><strong>Address</strong></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.personAddress.street) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.personAddress.city) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.personAddress.state) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.personAddress.zip) }}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="p-2 my-2 bg-primary-subtle">
+                        <span class="text-truncate"><strong>License</strong></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.personLicense.number) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.personLicense.state) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.personLicense.class) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.personLicense.status) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.personLicense.effectiveDate) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.personLicense.expirationDate) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="p-1 float-end">
+                {{ form_widget(form.register) }}
+            </footer>
+
+            <div class="d-none">
+                {{ form_rest(form) }}
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+{% endblock %}

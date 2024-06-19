@@ -39,7 +39,7 @@ class VehicleController extends AbstractController
     }
 
     /**
-     * Create vehicle
+     * Create & edit vehicle
      *
      * @throws Exception
      */
@@ -88,12 +88,12 @@ class VehicleController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/vehicles/{id}/delete', name: 'app_dashboard_vehicles_delete', methods: ['DELETE'])]
-    public function delete(Vehicle $vehicle,  VehicleManager $vehicleManager): JsonResponse
+    public function delete(Request $request, Vehicle $vehicle,  VehicleManager $vehicleManager): JsonResponse
     {
         try {
             $vehicleManager->delete($vehicle);
         } catch (Exception $e) {
-            $this->addFlash('Error', sprintf("Unable to delete this vehicle",));
+            $this->addFlash('Error', 'Unable to delete this vehicle');
             return $this->json(['success' => false]);
         }
 
@@ -106,7 +106,7 @@ class VehicleController extends AbstractController
      * @throws Exception
      */
     #[Route('/dashboard/vehicles/{id}/show', name: 'app_dashboard_vehicles_show', methods: ['GET'])]
-    public function show(Vehicle $vehicle,  VehicleManager $vehicleManager): Response
+    public function show(Vehicle $vehicle): Response
     {
         return $this->render('dashboard/vehicle/show.html.twig', [
             'title' => 'Vehicles',

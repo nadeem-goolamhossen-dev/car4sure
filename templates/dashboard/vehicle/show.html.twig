@@ -46,27 +46,27 @@
                             <p class="text-truncate"><strong>Vin :</strong>{{ vehicle.vin }}</p>
                         </div>
                         <div class="col-4">
-                            <p class="text-truncate"><strong>Ownership :</strong>{{ vehicle.ownership }}</p>
+                            <p class="text-truncate"><strong>Usage :</strong>{{ vehicle.vehicleUsage }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p class="text-truncate"><strong>Primary use :</strong>{{ vehicle.primaryUse }}</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4">
-                            <p class="text-truncate"><strong>Vin :</strong>{{ vehicle.vin }}</p>
-                        </div>
                         <div class="col-4">
                             <p class="text-truncate"><strong>Annual milleage :</strong>{{ vehicle.annualMilleage }}</p>
                         </div>
                         <div class="col-4">
                             <p class="text-truncate"><strong>Ownership :</strong>{{ vehicle.ownership }}</p>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4">
-                            <p class="text-truncate"><strong>Usage :</strong>{{ vehicle.vehicleUsage }}</p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-truncate"><strong>Primary use :</strong>{{ vehicle.primaryUse }}</p>
-                        </div>
+
+                        {% if vehicle.policy %}
+                            <div class="col-4">
+                                <p class="text-truncate">
+                                    <strong>Policy no :</strong>{{ "%010d"|format(vehicle.policy.policyNo) }}
+                                </p>
+                            </div>
+                        {% endif %}
                     </div>
 
                     {# Vehicles Coverages Details #}
@@ -99,7 +99,7 @@
                     {% endif %}
 
                     {# Vehicles Coverages Details #}
-                    {% if vehicle.coverages %}
+                    {% if vehicle.coverages|length > 0 %}
 
                         <div class="p-2 my-2 bg-primary-subtle">
                             <span class="text-truncate"><strong>Coverages</strong></span>
@@ -153,7 +153,7 @@
                             </div>`;
 
                             $(alertElmt).insertAfter('.main-title').fadeTo(2000, 500).slideUp(500, function () {
-                                $('.alert').slideUp(500);
+                                $('.alert').slideUp(1000);
                                 location.href = $('.vehiclesList').attr('href');
                             });
                         }

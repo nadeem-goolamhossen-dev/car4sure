@@ -4,12 +4,12 @@ namespace App\Entity;
 
 use App\Repository\PolicyRepository;
 use App\Traits\LoggableEntityTrait;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PolicyRepository::class)]
 #[ORM\Table(name: '`policy`')]
@@ -37,11 +37,9 @@ class Policy
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $expirationDate = null;
 
-    #[ORM\Column(type: 'datetime')]
-    private ?DateTime $createdAt;
-
-    #[ORM\Column(type: 'datetime')]
-    private ?DateTime $updatedAt;
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'policies')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Person $holder = null;
 
     /**
      * @var Collection<int, Vehicle>
@@ -115,6 +113,18 @@ class Policy
     public function setExpirationDate(DateTimeInterface $expirationDate): static
     {
         $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    public function getHolder(): ?Person
+    {
+        return $this->holder;
+    }
+
+    public function setHolder(?Person $holder): static
+    {
+        $this->holder = $holder;
 
         return $this;
     }

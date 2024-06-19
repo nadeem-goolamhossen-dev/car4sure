@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -32,8 +33,11 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/logout/success', name: 'app_logout_success')]
-    public function logoutSuccess(): Response
+    public function logoutSuccess(Request $request): Response
     {
+        $request->getSession()->clear();
+        $request->getSession()->invalidate();
+
         if ($this->getUser()) {
             return $this->redirectToRoute('app_logout');
         }
@@ -42,8 +46,10 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    public function logout(Request $request): void
     {
+        $request->getSession()->invalidate();
+
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

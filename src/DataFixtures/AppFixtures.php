@@ -3,11 +3,15 @@
 namespace App\DataFixtures;
 
 use App\Constant\Coverage\CoverageConstant;
+use App\Constant\Person\PersonConstant;
 use App\Entity\Address;
 use App\Entity\Coverage;
+use App\Entity\License;
+use App\Entity\Person;
 use App\Entity\Policy;
 use App\Entity\User;
 use App\Entity\Vehicle;
+use DateInterval;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -30,7 +34,12 @@ class AppFixtures extends Fixture
     /**
      * @var array List of users
      */
-    private array $userList = [];
+    private array $users = [];
+
+    /**
+     * @var array List of persons
+     */
+    private array $persons = [];
 
     /**
      * @var array List of vehicles
@@ -46,8 +55,6 @@ class AppFixtures extends Fixture
      * @var array List of vehicles
      */
     private array $vehicles = [];
-
-    private ?User $admin = null;
 
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
@@ -73,6 +80,9 @@ class AppFixtures extends Fixture
         // Create list of vehicles
         $this->createVehicles($manager);
 
+        // Create list of persons
+        //$this->createPersons($manager);
+
         // Create list of policies
         $this->createPolicies($manager);
     }
@@ -87,21 +97,23 @@ class AppFixtures extends Fixture
     public function createUsers(ObjectManager $manager): void
     {
         // Create admin user
-        $this->admin = new User();
-        $this->admin
+        $admin = new User();
+        $admin
             ->setRoles(['ROLE_ADMIN'])
             ->setEmail('goolamhossen.nadeem@gmail.com')
-            ->setPassword($this->passwordHasher->hashPassword($this->admin, 'admin'))
+            ->setPassword($this->passwordHasher->hashPassword($admin, 'admin'))
             ->setFirstname('Nadeem')
             ->setLastname('Goolam Hossen')
             ->setActive(true)
             ->setCreatedAt(new DateTime())
             ->setUpdatedAt(new DateTime())
-            ->setCreatedBy($this->admin)
-            ->setUpdatedBy($this->admin)
+            ->setCreatedBy($admin)
+            ->setUpdatedBy($admin)
         ;
 
-        $manager->persist($this->admin);
+        $manager->persist($admin);
+
+        $this->users[] = $admin;
 
         // Create dummy users
         for ($u = 1; $u <= 5; $u++) {
@@ -115,14 +127,14 @@ class AppFixtures extends Fixture
                 ->setActive(true)
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
-                ->setCreatedBy($this->admin)
-                ->setUpdatedBy($this->admin)
+                ->setCreatedBy($this->faker->randomElement($this->users))
+                ->setUpdatedBy($this->faker->randomElement($this->users))
             ;
 
             $manager->persist($user);
 
             // Keep in array
-            $this->userList[] = $user;
+            $this->users[] = $user;
         }
 
         $manager->flush();
@@ -147,8 +159,8 @@ class AppFixtures extends Fixture
                 ->setDeductible(500)
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
-                ->setCreatedBy($this->admin)
-                ->setUpdatedBy($this->admin)
+                ->setCreatedBy($this->faker->randomElement($this->users))
+                ->setUpdatedBy($this->faker->randomElement($this->users))
             ;
 
             $manager->persist($coverage);
@@ -192,8 +204,8 @@ class AppFixtures extends Fixture
                 ->setGaragingAddress($address)
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
-                ->setCreatedBy($this->admin)
-                ->setUpdatedBy($this->admin)
+                ->setCreatedBy($this->faker->randomElement($this->users))
+                ->setUpdatedBy($this->faker->randomElement($this->users))
             ;
 
             // Add coverages to vehicle
@@ -212,6 +224,41 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
+    public function createPersons(ObjectManager $manager): void
+    {
+        for ($c = 1; $c <= 5; $c++) {
+            // Create person address
+            $address = new Address();
+            $address
+                ->setStreet($this->faker->streetAddress)
+                ->setCity($this->faker->city)
+                ->setState($this->faker->countryCode)
+                ->setZip($this->faker->numerify('#####'))
+            ;
+
+            $gender = $this->faker->randomElement(PersonConstant::GENDERS);
+            $firstname = ($gender == 'M') ? $this->faker->firstNameMale : $this->faker->firstNameFemale;
+
+            $policyHolder = new Person();
+            $policyHolder
+                ->setFirstname($firstname)
+                ->setLastname($this->faker->lastName)
+                ->setGender($gender)
+                ->setAge($this->faker->numberBetween(20, 35))
+                ->setMaritalStatus($this->faker->randomElement(['Single', 'Married']))
+                ->setPersonAddress($address)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setCreatedBy($this->faker->randomElement($this->users))
+                ->setUpdatedBy($this->faker->randomElement($this->users))
+            ;
+
+            $manager->persist($policyHolder);
+        }
+
+        $manager->flush();
+    }
+
     /**
      * Create list of policies.
      *
@@ -222,6 +269,68 @@ class AppFixtures extends Fixture
     public function createPolicies(ObjectManager $manager): void
     {
         for ($p = 1; $p <= 5; $p++) {
+
+            // Create person address
+            $address = new Address();
+            $address
+                ->setStreet($this->faker->streetAddress)
+                ->setCity($this->faker->city)
+                ->setState($this->faker->countryCode)
+                ->setZip($this->faker->numerify('#####'))
+            ;
+
+            $gender = $this->faker->randomElement(PersonConstant::GENDERS);
+            $firstname = ($gender == 'M') ? $this->faker->firstNameMale : $this->faker->firstNameFemale;
+
+            $policyHolder = new Person();
+            $policyHolder
+                ->setFirstname($firstname)
+                ->setLastname($this->faker->lastName)
+                ->setGender($gender)
+                ->setAge($this->faker->numberBetween(20, 35))
+                ->setMaritalStatus($this->faker->randomElement(['Single', 'Married']))
+                ->setPersonAddress($address)
+                ->setCreatedAt(new DateTime())
+                ->setUpdatedAt(new DateTime())
+                ->setCreatedBy($this->faker->randomElement($this->users))
+                ->setUpdatedBy($this->faker->randomElement($this->users))
+            ;
+
+            // Get chance of creating a licence
+            $hasLicence = $this->faker->boolean(60);
+
+            if ($hasLicence) {
+                $effectiveDate = $this->faker->dateTime;
+                $expiryDate = (clone $effectiveDate)->add(new DateInterval('P1Y'));
+                $isActive = $expiryDate->format('Y-m-d') > $effectiveDate->format('Y-m-d');
+
+                // Create license
+                $license = new License();
+                $license
+                    ->setNumber($this->faker->unique()->numerify('#######'))
+                    ->setState($address->getState())
+                    ->setClass(strtoupper($this->faker->randomLetter))
+                    ->setStatus($isActive)
+                    ->setEffectiveDate($effectiveDate)
+                    ->setExpirationDate($expiryDate)
+                ;
+                /*$license
+                    ->setNumber($this->faker->unique()->numerify('#######'))
+                    ->setState($address->getState())
+                    ->setClass(strtoupper($this->faker->randomLetter))
+                    ->setStatus($isActive ?? true)
+                    ->setEffectiveDate(new DateTime())
+                    ->s(new DateTime())
+                    ->setCreatedAt(new DateTime())
+                    ->setUpdatedAt(new DateTime())
+                    ->setCreatedBy($this->faker->randomElement($this->users))
+                    ->setUpdatedBy($this->faker->randomElement($this->users))
+                ;*/
+
+                $policyHolder->setPersonLicense($license);
+            }
+
+            // Creat dummy policy
             $dateNow = $this->faker->dateTime;
             $startDate = $dateNow->modify('-10 years');
             $endDate = (clone $startDate)->modify('+1 years');
@@ -233,23 +342,21 @@ class AppFixtures extends Fixture
                 ->setStatus(true)
                 ->setEffectiveDate($startDate)
                 ->setExpirationDate($endDate)
+                ->setHolder($policyHolder)
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
-                ->setCreatedBy($this->admin)
-                ->setUpdatedBy($this->admin)
+                ->setCreatedBy($this->faker->randomElement($this->users))
+                ->setUpdatedBy($this->faker->randomElement($this->users))
             ;
 
             // Add vehicles to policy
-            $randomNum = $this->faker->numberBetween(1, count($this->vehicles));
+            $randomNum = $this->faker->numberBetween(1, count($this->vehicles) - 1);
 
-            for ($pv = 1; $pv < $randomNum; $pv++) {
+            for ($pv = 1; $pv <= $randomNum; $pv++) {
                 $policy->addVehicle($this->vehicles[$pv]);
             }
 
             $manager->persist($policy);
-
-            // Keep in array
-            $this->policies[] = $policy;
         }
 
         $manager->flush();

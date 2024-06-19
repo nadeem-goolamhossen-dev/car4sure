@@ -48,16 +48,14 @@ class DashboardController extends AbstractController
         $this->policyManager = $policyManager;
         $this->vehicleManager = $vehicleManager;
 
-        $this->isAdmin = !is_null($this->security->getUser()) ?? in_array('ROLE_ADMIN', $this->security->getUser()
-            ->getRoles
-            ());
-
+        $this->isAdmin = !is_null($this->security->getUser()) ?? in_array(
+            'ROLE_ADMIN', $this->security->getUser()->getRoles()
+        );
     }
 
     #[Route('/', name: 'app_dashboard', methods: ['GET'])]
     public function index(): Response
     {
-
         return $this->render('dashboard/dashboard.html.twig', [
             'title' => 'Dashboard',
             'activeMenu' => 'app_dashboard',

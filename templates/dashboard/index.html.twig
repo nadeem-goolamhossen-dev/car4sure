@@ -24,14 +24,23 @@
                         </li>
 
                         {% if isAdmin %}
+
                             <li class="nav-item">
                                 <a class="nav-link" data-app-name="app_dashboard_users" href="{{ path('app_dashboard_users') }}">
                                     <i class="fa fa-users"></i>
                                     Users
                                 </a>
                             </li>
+
                         {% endif %}
 
+                        <li class="nav-item">
+                            <a class="nav-link" data-app-name="app_dashboard_persons" href="{{ path
+                                ('app_dashboard_persons') }}">
+                                <i class="fa fa-person" aria-hidden="true"></i>
+                                Persons
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" data-app-name="app_dashboard_policies" href="{{ path
                                 ('app_dashboard_policies') }}">
@@ -83,7 +92,7 @@
         });
 
         $('.alert').fadeTo(2000, 500).slideUp(500, function () {
-            $('.alert').slideUp(500);
+            $('.alert').slideUp(1000);
         })
     </script>
 
