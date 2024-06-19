@@ -3,12 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\LicenseRepository;
-use App\Traits\LoggableEntityTrait;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LicenseRepository::class)]
 #[ORM\Table(name: '`license`')]
@@ -36,14 +33,6 @@ class License
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $expirationDate = null;
-
-    /*#[ORM\Column(type: 'datetime')]
-    #[Assert\Date(message: 'Please enter a valid effective date.')]
-    private ?DateTime $effectiveDate;
-
-    #[ORM\Column(type: 'datetime')]
-    #[Assert\Date(message: 'Please enter a valid expiration date.')]
-    private ?DateTime $expirationDate;*/
 
     public function getId(): ?int
     {

@@ -109,7 +109,7 @@ class UserManager
     {
         // Prevent deleting admin
         if ($user->getId() === 1) {
-            throw new Exception(sprintf('This user cannot be deleted.'));
+            throw new Exception('This user cannot be deleted.');
         }
 
         // Delete user

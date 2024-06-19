@@ -5,13 +5,10 @@ namespace App\Form;
 use App\Entity\Person;
 use App\Entity\Policy;
 use App\Entity\Vehicle;
-use App\Repository\PolicyRepository;
-use App\Service\Person\PersonManager;
 use App\Service\Vehicle\VehicleManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,35 +18,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PolicyType extends AbstractType
 {
     /**
-     * @var PersonManager
-     */
-    private PersonManager $personManager;
-
-    /**
      * @var VehicleManager
      */
     private VehicleManager $vehicleManager;
 
     /**
-     * @var PolicyRepository
-     */
-    private PolicyRepository $policyRepository;
-
-    /**
      * Constructor
      *
-     * @param PersonManager $personManager
      * @param VehicleManager $vehicleManager
      */
-    public function __construct(
-        PersonManager $personManager,
-        VehicleManager $vehicleManager,
-        PolicyRepository $policyRepository
-    )
+    public function __construct(VehicleManager $vehicleManager)
     {
-        $this->personManager = $personManager;
         $this->vehicleManager = $vehicleManager;
-        $this->policyRepository = $policyRepository;
     }
 
     /**
@@ -62,13 +42,6 @@ class PolicyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        //$policy = $options['data'] ? $options['data'] : null;
-        /*$effectiveDate = (new DateTime())->add(new DateInterval('P1D'))->setTime(0, 0, 0);
-
-        if ($policy && !is_null($policy->getId())) {
-            $effectiveDate = $policy->getEffectiveDate();
-        }*/
-
         $builder
             ->add('type', TextType::class, [
                 'label' => 'Policy type'
@@ -79,10 +52,10 @@ class PolicyType extends AbstractType
             ->add('expirationDate', DateType::class, [
                 'widget' => 'single_text',
             ])
-            /*->add('holder', EntityType::class, [
+            ->add('holder', EntityType::class, [
                 'class' => Person::class,
                 'choice_label' => 'fullname',
-            ])*/
+            ])
             ->add('status', CheckboxType::class, [
                 'label' => 'Is active',
                 'required' => false,

@@ -53,9 +53,16 @@ class Person
     #[ORM\ManyToMany(targetEntity: Policy::class, mappedBy: 'drivers')]
     private Collection $policies;
 
+    /**
+     * @var Collection<int, Policy>
+     */
+    #[ORM\OneToMany(targetEntity: Policy::class, mappedBy: 'holder', cascade: ['persist', 'remove'])]
+    private Collection $policiesAsHolder;
+
     public function __construct()
     {
         $this->policies = new ArrayCollection();
+        $this->policiesAsHolder = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,6 +181,36 @@ class Person
     {
         if ($this->policies->removeElement($policy)) {
             $policy->removeDriver($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Policy>
+     */
+    public function getPoliciesAsHolder(): Collection
+    {
+        return $this->policiesAsHolder;
+    }
+
+    public function addPoliciesAsHolder(Policy $policiesAsHolder): static
+    {
+        if (!$this->policiesAsHolder->contains($policiesAsHolder)) {
+            $this->policiesAsHolder->add($policiesAsHolder);
+            $policiesAsHolder->setHolder($this);
+        }
+
+        return $this;
+    }
+
+    public function removePoliciesAsHolder(Policy $policiesAsHolder): static
+    {
+        if ($this->policiesAsHolder->removeElement($policiesAsHolder)) {
+            // set the owning side to null (unless already changed)
+            if ($policiesAsHolder->getHolder() === $this) {
+                $policiesAsHolder->setHolder(null);
+            }
         }
 
         return $this;

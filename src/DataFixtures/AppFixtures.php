@@ -81,7 +81,7 @@ class AppFixtures extends Fixture
         $this->createVehicles($manager);
 
         // Create list of persons
-        //$this->createPersons($manager);
+        $this->createPersons($manager);
 
         // Create list of policies
         $this->createPolicies($manager);
@@ -100,10 +100,10 @@ class AppFixtures extends Fixture
         $admin = new User();
         $admin
             ->setRoles(['ROLE_ADMIN'])
-            ->setEmail('goolamhossen.nadeem@gmail.com')
+            ->setEmail('admin@gmail.com')
             ->setPassword($this->passwordHasher->hashPassword($admin, 'admin'))
-            ->setFirstname('Nadeem')
-            ->setLastname('Goolam Hossen')
+            ->setFirstname('Admin')
+            ->setLastname('User')
             ->setActive(true)
             ->setCreatedAt(new DateTime())
             ->setUpdatedAt(new DateTime())
@@ -253,51 +253,8 @@ class AppFixtures extends Fixture
                 ->setUpdatedBy($this->faker->randomElement($this->users))
             ;
 
-            $manager->persist($policyHolder);
-        }
-
-        $manager->flush();
-    }
-
-    /**
-     * Create list of policies.
-     *
-     * @param ObjectManager $manager
-     *
-     * @return void
-     */
-    public function createPolicies(ObjectManager $manager): void
-    {
-        for ($p = 1; $p <= 5; $p++) {
-
-            // Create person address
-            $address = new Address();
-            $address
-                ->setStreet($this->faker->streetAddress)
-                ->setCity($this->faker->city)
-                ->setState($this->faker->countryCode)
-                ->setZip($this->faker->numerify('#####'))
-            ;
-
-            $gender = $this->faker->randomElement(PersonConstant::GENDERS);
-            $firstname = ($gender == 'M') ? $this->faker->firstNameMale : $this->faker->firstNameFemale;
-
-            $policyHolder = new Person();
-            $policyHolder
-                ->setFirstname($firstname)
-                ->setLastname($this->faker->lastName)
-                ->setGender($gender)
-                ->setAge($this->faker->numberBetween(20, 35))
-                ->setMaritalStatus($this->faker->randomElement(['Single', 'Married']))
-                ->setPersonAddress($address)
-                ->setCreatedAt(new DateTime())
-                ->setUpdatedAt(new DateTime())
-                ->setCreatedBy($this->faker->randomElement($this->users))
-                ->setUpdatedBy($this->faker->randomElement($this->users))
-            ;
-
             // Get chance of creating a licence
-            $hasLicence = $this->faker->boolean(60);
+            $hasLicence = $this->faker->boolean(75);
 
             if ($hasLicence) {
                 $effectiveDate = $this->faker->dateTime;
@@ -314,21 +271,29 @@ class AppFixtures extends Fixture
                     ->setEffectiveDate($effectiveDate)
                     ->setExpirationDate($expiryDate)
                 ;
-                /*$license
-                    ->setNumber($this->faker->unique()->numerify('#######'))
-                    ->setState($address->getState())
-                    ->setClass(strtoupper($this->faker->randomLetter))
-                    ->setStatus($isActive ?? true)
-                    ->setEffectiveDate(new DateTime())
-                    ->s(new DateTime())
-                    ->setCreatedAt(new DateTime())
-                    ->setUpdatedAt(new DateTime())
-                    ->setCreatedBy($this->faker->randomElement($this->users))
-                    ->setUpdatedBy($this->faker->randomElement($this->users))
-                ;*/
 
                 $policyHolder->setPersonLicense($license);
             }
+
+            $manager->persist($policyHolder);
+
+            // Keep in array
+            $this->persons[] = $policyHolder;
+        }
+
+        $manager->flush();
+    }
+
+    /**
+     * Create list of policies.
+     *
+     * @param ObjectManager $manager
+     *
+     * @return void
+     */
+    public function createPolicies(ObjectManager $manager): void
+    {
+        for ($p = 1; $p <= 5; $p++) {
 
             // Creat dummy policy
             $dateNow = $this->faker->dateTime;
@@ -342,7 +307,8 @@ class AppFixtures extends Fixture
                 ->setStatus(true)
                 ->setEffectiveDate($startDate)
                 ->setExpirationDate($endDate)
-                ->setHolder($policyHolder)
+                ->setHolder($this->faker->randomElement($this->persons))
+                ->addDriver($this->faker->randomElement($this->persons))
                 ->setCreatedAt(new DateTime())
                 ->setUpdatedAt(new DateTime())
                 ->setCreatedBy($this->faker->randomElement($this->users))

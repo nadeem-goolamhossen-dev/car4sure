@@ -16,11 +16,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class DashboardController extends AbstractController
 {
     /**
-     * @var Security
-     */
-    private Security $security;
-
-    /**
      * @var PolicyManager
      */
     private PolicyManager $policyManager;
@@ -44,12 +39,11 @@ class DashboardController extends AbstractController
      */
     public function __construct(Security $security, PolicyManager $policyManager, VehicleManager $vehicleManager)
     {
-        $this->security = $security;
         $this->policyManager = $policyManager;
         $this->vehicleManager = $vehicleManager;
 
-        $this->isAdmin = !is_null($this->security->getUser()) ?? in_array(
-            'ROLE_ADMIN', $this->security->getUser()->getRoles()
+        $this->isAdmin = $security->getUser() && in_array(
+            'ROLE_ADMIN', $security->getUser()->getRoles()
         );
     }
 

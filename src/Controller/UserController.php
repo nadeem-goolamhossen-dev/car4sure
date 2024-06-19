@@ -24,7 +24,9 @@ class UserController extends AbstractController
 
     public function __construct(Security $security)
     {
-        $this->isAdmin = !is_null($security->getUser()) ?? in_array('ROLE_ADMIN', $security->getUser()->getRoles());
+        $this->isAdmin = $security->getUser() && in_array(
+            'ROLE_ADMIN', $security->getUser()->getRoles()
+        );
     }
 
     /**

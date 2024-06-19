@@ -49,18 +49,18 @@
 
                     <div class="row">
                         <div class="col-12">
-{#                            {% if policy and policy.holder %}#}
-{#                                {% set holderAddress = policy.holder.personAddress %}#}
-{#                                <div class="row">#}
-{#                                    <div class="col-4">#}
-{#                                        <p class="text-truncate">#}
-{#                                            <strong>Fullname :</strong>{{ policy.holder.fullname }}#}
-{#                                        </p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            {% else %}#}
-{#                                {{ form_widget(form.holder) }}#}
-{#                            {% endif %}#}
+                            {% if policy and policy.holder %}
+                                {% set holderAddress = policy.holder.personAddress %}
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="text-truncate">
+                                            <strong>Fullname :</strong>{{ policy.holder.fullname }}
+                                        </p>
+                                    </div>
+                                </div>
+                            {% else %}
+                                {{ form_widget(form.holder) }}
+                            {% endif %}
                         </div>
                     </div>
 

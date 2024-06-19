@@ -45,9 +45,12 @@ class Policy
     /**
      * @var Collection<int, Person>
      */
-    #[ORM\ManyToMany(targetEntity: Person::class, inversedBy: 'policies', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: Person::class, inversedBy: 'policies', cascade: ['persist'])]
     #[ORM\JoinTable(name: 'policy_drivers')]
     private Collection $drivers;
+
+    #[ORM\ManyToOne(inversedBy: 'policiesAsHolder')]
+    private ?Person $holder = null;
 
     public function __construct()
     {
@@ -170,6 +173,18 @@ class Policy
     public function removeDriver(Person $driver): static
     {
         $this->drivers->removeElement($driver);
+
+        return $this;
+    }
+
+    public function getHolder(): ?Person
+    {
+        return $this->holder;
+    }
+
+    public function setHolder(?Person $holder): static
+    {
+        $this->holder = $holder;
 
         return $this;
     }

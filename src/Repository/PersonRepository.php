@@ -37,7 +37,6 @@ class PersonRepository extends ServiceEntityRepository
     public function buildQuery(array $options = []): QueryBuilder
     {
         $query = $this->createQueryBuilder('p');
-        //$query->join(License::class, 'l', Join::WITH, 'p.license = l.id');
 
         return $query->orderBy('p.lastname')
             ->addOrderBy('p.firstname')

@@ -47,116 +47,72 @@
                         </div>
                     </div>
 
-{#                    {% if policy.holder %}#}
-{#                        {% set holder = policy.holder %}#}
+                    {% if policy.holder %}
+                        {% set holder = policy.holder %}
 
-{#                        <div class="p-2 bg-warning-subtle">#}
-{#                            <span class="text-truncate"><strong>Details of holder</strong></span>#}
-{#                        </div>#}
+                        <div class="p-2 bg-warning-subtle">
+                            <span class="text-truncate"><strong>Details of holder</strong></span>
+                        </div>
 
-{#                        <div class="holder-details bg-dark-subtle p-2">#}
-{#                            <div class="row">#}
-{#                                <div class="col-4">#}
-{#                                    <p class="text-truncate"><strong>Firstname :</strong>{{ holder.firstname }}</p>#}
-{#                                </div>#}
-{#                                <div class="col-4">#}
-{#                                    <p class="text-truncate"><strong>Lastname :</strong>{{ holder.lastname }}</p>#}
-{#                                </div>#}
-{#                                <div class="col-4">#}
-{#                                    <p class="text-truncate"><strong>Age :</strong>{{ holder.age }}</p>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="row">#}
-{#                                <div class="col-4">#}
-{#                                    <p class="text-truncate">#}
-{#                                        <strong>Gender :</strong>{{ (holder.gender) == 'M' ? 'Male' : 'Female' }}#}
-{#                                    </p>#}
-{#                                </div>#}
-{#                                <div class="col-4">#}
-{#                                    <p class="text-truncate">#}
-{#                                        <strong>Marital status :</strong>{{ holder.maritalStatus }}#}
-{#                                    </p>#}
-{#                                </div>#}
-{#                            </div>#}
+                        <div class="holder-details bg-dark-subtle p-2">
+                            <div class="row">
+                                <div class="col-4">
+                                    <p class="text-truncate"><strong>Firstname :</strong>{{ holder.firstname }}</p>
+                                </div>
+                                <div class="col-4">
+                                    <p class="text-truncate"><strong>Lastname :</strong>{{ holder.lastname }}</p>
+                                </div>
+                                <div class="col-4">
+                                    <p class="text-truncate"><strong>Age :</strong>{{ holder.age }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <p class="text-truncate">
+                                        <strong>Gender :</strong>{{ (holder.gender) == 'M' ? 'Male' : 'Female' }}
+                                    </p>
+                                </div>
+                                <div class="col-4">
+                                    <p class="text-truncate">
+                                        <strong>Marital status :</strong>{{ holder.maritalStatus }}
+                                    </p>
+                                </div>
+                            </div>
 
-{#                            #}{# Policy Holder Address Details #}
-{#                            {% if holder.personAddress %}#}
-{#                                {% set holderAddress = holder.personAddress %}#}
+                            {# Policy Holder Address Details #}
+                            {% if holder.personAddress %}
+                                {% set holderAddress = holder.personAddress %}
 
-{#                                <hr class="m-1">#}
+                                <hr class="m-1">
 
-{#                                <div class="p-1 my-2">#}
-{#                                    <span class="text-truncate"><strong>Address</strong></span>#}
-{#                                </div>#}
+                                <div class="p-1 my-2">
+                                    <span class="text-truncate"><strong>Address</strong></span>
+                                </div>
 
-{#                                <div class="holder-address-details p-1">#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-6">#}
-{#                                            <p class="text-truncate"><strong>Street :</strong>{{ holderAddress.street }}</p>#}
-{#                                        </div>#}
-{#                                        <div class="col-6">#}
-{#                                            <p class="text-truncate"><strong>City :</strong>{{ holderAddress.city }}</p>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-6">#}
-{#                                            <p class="text-truncate"><strong>City :</strong>{{ holderAddress.city }}</p>#}
-{#                                        </div>#}
-{#                                        <div class="col-6">#}
-{#                                            <p class="text-truncate"><strong>State :</strong>{{ holderAddress.state }}</p>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
+                                <div class="holder-address-details p-1">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p class="text-truncate"><strong>Street :</strong>{{ holderAddress.street }}</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="text-truncate"><strong>City :</strong>{{ holderAddress.city }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p class="text-truncate"><strong>City :</strong>{{ holderAddress.city }}</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="text-truncate"><strong>State :</strong>{{ holderAddress.state }}</p>
+                                        </div>
+                                    </div>
+                                </div>
 
-{#                            {% endif %}#}
+                            {% endif %}
 
-{#                            #}{# Policy Holder License Details #}
-{#                            {% if holder.personLicense %}#}
-{#                                {% set license = holder.personLicense %}#}
+                        </div>
 
-{#                                <hr class="m-1">#}
-
-{#                                <div class="p-1 my-2">#}
-{#                                    <span class="text-truncate"><strong>Licence</strong></span>#}
-{#                                </div>#}
-
-{#                                <div class="license-details p-1">#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-4">#}
-{#                                            <p class="text-truncate"><strong>Number :</strong>{{ license.number }}</p>#}
-{#                                        </div>#}
-{#                                        <div class="col-4">#}
-{#                                            <p class="text-truncate"><strong>State :</strong>{{ license.state }}</p>#}
-{#                                        </div>#}
-{#                                        <div class="col-4">#}
-{#                                            <p class="text-truncate"><strong>Status :</strong>{{ (license.status ==#}
-{#                                                0) ? 'Invalid' : 'Valid' }}</p>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    <div class="row">#}
-{#                                        <div class="col-4">#}
-{#                                            <p class="text-truncate"><strong>Class :</strong>{{ license.class }}</p>#}
-{#                                        </div>#}
-{#                                        <div class="col-4">#}
-{#                                            <p class="text-truncate">#}
-{#                                                <strong>Effective date :</strong>#}
-{#                                                {{ license.effectiveDate|date('Y-m-d') }}#}
-{#                                            </p>#}
-{#                                        </div>#}
-{#                                        <div class="col-4">#}
-{#                                            <p class="text-truncate">#}
-{#                                                <strong>Expiration date :</strong>#}
-{#                                                {{ license.expirationDate|date('Y-m-d') }}#}
-{#                                            </p>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-
-{#                            {% endif %}#}
-
-{#                        </div>#}
-
-{#                    {% endif %}#}
+                    {% endif %}
 
                     {# Policy Drivers Details #}
                     {% if policy.drivers|length > 0 %}
@@ -178,12 +134,65 @@
                                         <p class="text-truncate"><strong>Lastname :</strong>{{ driver.lastname }}</p>
                                     </div>
                                     <div class="col-4">
+                                        <p class="text-truncate"><strong>Age :</strong>{{ driver.age }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
                                         <p class="text-truncate">
-                                            <strong>Is Valid license :</strong>
-                                            {#                                                    {{ driver.license.status }}#}
+                                            <strong>Gender :</strong>{{ (driver.gender) == 'M' ? 'Male' : 'Female' }}
+                                        </p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate">
+                                            <strong>Marital status :</strong>{{ driver.maritalStatus }}
                                         </p>
                                     </div>
                                 </div>
+
+                                {# Driver License Details #}
+                                {% if driver.personLicense %}
+                                    {% set license = driver.personLicense %}
+
+                                    <div class="p-1 my-2">
+                                        <span class="text-truncate text-primary"><strong>Driver license</strong></span>
+                                    </div>
+
+                                    <div class="driver-license-details p-1">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <p class="text-truncate">
+                                                    <strong>Number :</strong>{{ license.number }}</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="text-truncate"><strong>State :</strong>{{ license.state }}</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="text-truncate">
+                                                    <strong>Status :</strong>{{ license.status }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <p class="text-truncate"><strong>Class :</strong>{{ license.class }}</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="text-truncate">
+                                                    <strong>Effective date :</strong>
+                                                    {{ license.effectiveDate|date('Y-m-d') }}
+                                                </p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="text-truncate">
+                                                    <strong>Expiration date :</strong>
+                                                    {{ license.expirationDate|date('Y-m-d') }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
 
                                 {# Driver Address Details #}
                                 {% if driver.personAddress %}

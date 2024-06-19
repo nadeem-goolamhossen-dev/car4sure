@@ -2,24 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\License;
 use App\Entity\Person;
-use App\EventSubscriber\AddLicenseSubscriber;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Event\PreSetDataEvent;
-use Symfony\Component\Form\Event\PreSubmitEvent;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PersonType extends AbstractType
@@ -67,8 +56,6 @@ class PersonType extends AbstractType
                 ],
             ])
         ;
-
-
     }
 
     /**
