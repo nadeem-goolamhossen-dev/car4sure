@@ -21,18 +21,28 @@ git clone https://github.com/nadeem-goolamhossen-dev/car4sure.git car4sure
 cd car4sure/
 ```
 
-**Option 2.** Run the following commands inside the project :
+**Option 2.** Open code editor:
 
 ```bash
+open project in code editor
+configure database settings in.env file, example  : DATABASE_URL="mysql://root@127.0.0.1:3306/car4sure?serverVersion=8.0.32&charset=utf8mb4"
+```
+
+**Option 3.** Run the following commands inside the project :
+
+```bash
+open terminal and execute the commands : 
 composer install
 npm install
 php bin/console importmap:install
 php bin/console asset-map:compile
 ```
 
-**Option 3.** Initialise the app using this command:
+**Option 4.** Initialise the app using this command:
 
 ```bash
+composer require --dev orm-fixtures
+composer require doctrine/doctrine-fixtures-bundle --dev
 php bin/console app:init
 ```
 
