@@ -51,16 +51,16 @@
                             <p class="text-truncate"><strong>Marital status :</strong>{{ person.maritalStatus }}</p>
                         </div>
 
-{#                        {% if person.policies %}#}
-{#                            <div class="col-4">#}
-{#                                <p class="text-truncate">#}
-{#                                    <strong>Holder of policy :</strong>#}
-{#                                    <a href="{{ path('app_dashboard_policies_show', {'id': person.policy.id}) }}">#}
-{#                                        {{ "%010d"|format(person.policy.policyNo) }}#}
-{#                                    </a>#}
-{#                                </p>#}
-{#                            </div>#}
-{#                        {% endif %}#}
+                        {% if person.policy %}
+                            <div class="col-4">
+                                <p class="text-truncate">
+                                    <strong>Holder of policy :</strong>
+                                    <a href="{{ path('app_dashboard_policies_show', {'id': person.policy.id}) }}">
+                                        {{ "%010d"|format(person.policy.policyNo) }}
+                                    </a>
+                                </p>
+                            </div>
+                        {% endif %}
                     </div>
 
                     {# Person Policies Details #}
