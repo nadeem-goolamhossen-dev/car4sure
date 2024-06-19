@@ -51,31 +51,17 @@
                             <p class="text-truncate"><strong>Marital status :</strong>{{ person.maritalStatus }}</p>
                         </div>
 
-                        {% if person.policy %}
-                            <div class="col-4">
-                                <p class="text-truncate">
-                                    <strong>Holder of policy :</strong>
-                                    <a href="{{ path('app_dashboard_policies_show', {'id': person.policy.id}) }}">
-                                        {{ "%010d"|format(person.policy.policyNo) }}
-                                    </a>
-                                </p>
-                            </div>
-                        {% endif %}
+{#                        {% if person.policy %}#}
+{#                            <div class="col-4">#}
+{#                                <p class="text-truncate">#}
+{#                                    <strong>Holder of policy :</strong>#}
+{#                                    <a href="{{ path('app_dashboard_policies_show', {'id': person.policy.id}) }}">#}
+{#                                        {{ "%010d"|format(person.policy.policyNo) }}#}
+{#                                    </a>#}
+{#                                </p>#}
+{#                            </div>#}
+{#                        {% endif %}#}
                     </div>
-
-                    {# Person Policies Details #}
-{#                    {% if person.policies %}#}
-
-{#                        <div class="p-2 my-2 bg-primary-subtle">#}
-{#                            <span class="text-truncate"><strong>Policies</strong></span>#}
-{#                        </div>#}
-
-{#                        {% for policy in person.policies %}#}
-
-
-{#                        {% endfor %}#}
-
-{#                    {% endif %}#}
 
                     {# Person Address Details #}
                     {% if person.personAddress %}
@@ -136,6 +122,24 @@
                                 </div>
                             </div>
                         </div>
+
+                    {% endif %}
+
+
+                    {# Person Policies Details #}
+                    {% if person.policies|length > 0 %}
+
+                        <div class="p-2 my-2 bg-primary-subtle">
+                            <span class="text-truncate"><strong>Policies as driver</strong></span>
+                        </div>
+
+                        {% for policy in person.policies %}
+
+                            <p class="text-muted">
+                                <strong>Policy 1 :</strong> {{ "%010d"|format(policy.policyNo) }}
+                            </p>
+
+                        {% endfor %}
 
                     {% endif %}
 

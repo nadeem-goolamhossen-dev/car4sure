@@ -79,10 +79,10 @@ class PolicyType extends AbstractType
             ->add('expirationDate', DateType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('holder', EntityType::class, [
+            /*->add('holder', EntityType::class, [
                 'class' => Person::class,
                 'choice_label' => 'fullname',
-            ])
+            ])*/
             ->add('status', CheckboxType::class, [
                 'label' => 'Is active',
                 'required' => false,
