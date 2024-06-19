@@ -25,7 +25,6 @@ cd car4sure/
 
 ```bash
 open project in code editor
-configure database settings in.env file, example  : DATABASE_URL="mysql://root@127.0.0.1:3306/car4sure?serverVersion=8.0.32&charset=utf8mb4"
 ```
 
 **Option 3.** Run the following commands inside the project :
@@ -42,7 +41,6 @@ php bin/console asset-map:compile
 
 ```bash
 composer require --dev orm-fixtures
-composer require doctrine/doctrine-fixtures-bundle --dev
 php bin/console app:init
 ```
 
