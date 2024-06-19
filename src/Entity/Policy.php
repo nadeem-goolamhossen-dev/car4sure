@@ -45,9 +45,16 @@ class Policy
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Person $holder = null;
 
+    /**
+     * @var Collection<int, Person>
+     */
+    #[ORM\OneToMany(targetEntity: Person::class, mappedBy: 'policy')]
+    private Collection $drivers;
+
     public function __construct()
     {
         $this->vehicles = new ArrayCollection();
+        $this->drivers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,6 +160,36 @@ class Policy
     public function setHolder(?Person $holder): static
     {
         $this->holder = $holder;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Person>
+     */
+    public function getDrivers(): Collection
+    {
+        return $this->drivers;
+    }
+
+    public function addDriver(Person $driver): static
+    {
+        if (!$this->drivers->contains($driver)) {
+            $this->drivers->add($driver);
+            $driver->setPolicy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDriver(Person $driver): static
+    {
+        if ($this->drivers->removeElement($driver)) {
+            // set the owning side to null (unless already changed)
+            if ($driver->getPolicy() === $this) {
+                $driver->setPolicy(null);
+            }
+        }
 
         return $this;
     }

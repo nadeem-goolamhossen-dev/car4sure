@@ -89,6 +89,13 @@ class PolicyType extends AbstractType
                 'label_attr' => ['class' => 'form-check-label'],
                 'attr' => ['class' => 'form-check-input'],
             ])
+            ->add('drivers', EntityType::class, [
+                'label' => false,
+                'class' => Person::class,
+                'choice_label' => 'fullname',
+                'multiple' => true,
+                'by_reference' => false,
+            ])
             ->add('vehicles', EntityType::class, [
                 'label' => false,
                 'class' => Vehicle::class,

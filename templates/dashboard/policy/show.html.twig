@@ -54,7 +54,7 @@
                             <span class="text-truncate"><strong>Details of holder</strong></span>
                         </div>
 
-                        <div class="holder-details bg-dark-subtle mb-3 p-2">
+                        <div class="holder-details bg-dark-subtle p-2">
                             <div class="row">
                                 <div class="col-4">
                                     <p class="text-truncate"><strong>Firstname :</strong>{{ holder.firstname }}</p>
@@ -158,15 +158,82 @@
 
                     {% endif %}
 
+                    {# Policy Drivers Details #}
+                    {% if policy.drivers|length > 0 %}
+
+                        <div class="p-2 bg-warning-subtle">
+                            <span class="text-truncate"><strong>Details of drivers</strong></span>
+                        </div>
+
+                        {% for driver in policy.drivers %}
+
+                            <div class="drivers-details bg-dark-subtle mb-0 p-2">
+                                <p class="text-truncate"><strong>Driver {{ loop.index }}</strong></p>
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Firstname :</strong>{{ driver.firstname }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate"><strong>Lastname :</strong>{{ driver.lastname }}</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-truncate">
+                                            <strong>Is Valid license :</strong>
+                                            {#                                                    {{ driver.license.status }}#}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {# Driver Address Details #}
+                                {% if driver.personAddress %}
+                                    {% set driverAddress = driver.personAddress %}
+
+                                    <div class="p-1 my-2">
+                                        <span class="text-truncate text-primary"><strong>Driver address</strong></span>
+                                    </div>
+
+                                    <div class="garaging-address-details p-1">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-truncate"><strong>Street :</strong>{{ driverAddress.street }}</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-truncate"><strong>City :</strong>{{ driverAddress.city }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="text-truncate"><strong>City :</strong>{{ driverAddress.city }}</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="text-truncate"><strong>State :</strong>{{ driverAddress.state }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                            {% if not loop.last %}
+                                <hr class="m-0 text-white bg-white">
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                    {# Policy Vehicles Details #}
                     {% if policy.vehicles|length > 0 %}
 
-                        <div class="p-2 bg-primary-subtle">
+                        <div class="p-2 bg-warning-subtle">
                             <span class="text-truncate"><strong>Details of vehicles</strong></span>
                         </div>
 
                         {% for vehicle in policy.vehicles %}
 
-                            <div class="vehicles-details bg-dark-subtle mb-0 p-2">
+                            <div class="vehicles-details bg-dark-subtle p-2">
                                 <p class="text-truncate"><strong>Vehicle {{ loop.index }}</strong></p>
 
                                 <div class="row">
@@ -229,7 +296,7 @@
 
                                 {% endif %}
 
-                                {% if vehicle.coverages %}
+                                {% if vehicle.coverages|length > 0 %}
 
                                     <div class="p-1 my-2">
                                         <span class="text-truncate text-success">
@@ -247,8 +314,8 @@
 
                                         <div class="coverages-details p-1">
                                             {% if vehicle.coverages|length > 1 %}
-                                                <p class="text-truncate text-warning-emphasis"><strong>Coverage {{ loop.index
-                                                        }}</strong></p>
+                                                <p class="text-truncate text-warning-emphasis">
+                                                    <strong>Coverage {{ loop.index }}</strong></p>
                                             {% endif %}
 
                                             <div class="row">
@@ -274,7 +341,9 @@
 
                             </div>
 
-                            <hr class="m-0 text-white bg-white">
+                            {% if not loop.last %}
+                                <hr class="m-0 text-white bg-white">
+                            {% endif %}
 
                         {% endfor %}
 

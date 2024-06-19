@@ -45,6 +45,9 @@ class Person
     #[ORM\JoinColumn(nullable: true)]
     private ?License $personLicense = null;
 
+    #[ORM\ManyToOne(inversedBy: 'drivers')]
+    private ?Policy $policy = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,5 +140,17 @@ class Person
     public function getFullname(): string
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    public function getPolicy(): ?Policy
+    {
+        return $this->policy;
+    }
+
+    public function setPolicy(?Policy $policy): static
+    {
+        $this->policy = $policy;
+
+        return $this;
     }
 }
